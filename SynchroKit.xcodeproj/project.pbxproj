@@ -30,15 +30,15 @@
 /* Begin PBXFileReference section */
 		45151ECB14F1129300F021AC /* libSynchroKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libSynchroKit.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		45151ECE14F1129300F021AC /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		45151ED214F1129300F021AC /* SynchroKit-Prefix.pch */ = {isa = PBXFileReference; path = "SynchroKit-Prefix.pch"; sourceTree = "<group>"; };
-		45151ED314F1129300F021AC /* SynchroKit.h */ = {isa = PBXFileReference; path = SynchroKit.h; sourceTree = "<group>"; };
+		45151ED214F1129300F021AC /* SynchroKit-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SynchroKit-Prefix.pch"; sourceTree = "<group>"; };
+		45151ED314F1129300F021AC /* SynchroKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SynchroKit.h; sourceTree = "<group>"; };
 		45151ED414F1129300F021AC /* SynchroKit.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SynchroKit.m; sourceTree = "<group>"; };
 		45151EDB14F1129300F021AC /* SynchroKitTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SynchroKitTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		45151EDC14F1129300F021AC /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		45151EDE14F1129300F021AC /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
-		45151EE614F1129300F021AC /* SynchroKitTests-Info.plist */ = {isa = PBXFileReference; path = "SynchroKitTests-Info.plist"; sourceTree = "<group>"; };
+		45151EE614F1129300F021AC /* SynchroKitTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SynchroKitTests-Info.plist"; sourceTree = "<group>"; };
 		45151EE814F1129300F021AC /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		45151EEA14F1129300F021AC /* SynchroKitTests.h */ = {isa = PBXFileReference; path = SynchroKitTests.h; sourceTree = "<group>"; };
+		45151EEA14F1129300F021AC /* SynchroKitTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SynchroKitTests.h; sourceTree = "<group>"; };
 		45151EEB14F1129300F021AC /* SynchroKitTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SynchroKitTests.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
