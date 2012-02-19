@@ -15,6 +15,12 @@
 		45151EE314F1129300F021AC /* libSynchroKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 45151ECB14F1129300F021AC /* libSynchroKit.a */; };
 		45151EE914F1129300F021AC /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 45151EE714F1129300F021AC /* InfoPlist.strings */; };
 		45151EEC14F1129300F021AC /* SynchroKitTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 45151EEB14F1129300F021AC /* SynchroKitTests.m */; };
+		45151EF714F115CC00F021AC /* SKObjectDescriptor.h in Headers */ = {isa = PBXBuildFile; fileRef = 45151EF514F115CC00F021AC /* SKObjectDescriptor.h */; };
+		45151EF814F115CC00F021AC /* SKObjectDescriptor.m in Sources */ = {isa = PBXBuildFile; fileRef = 45151EF614F115CC00F021AC /* SKObjectDescriptor.m */; };
+		45151F0914F11AC400F021AC /* SKDataDownloader.h in Headers */ = {isa = PBXBuildFile; fileRef = 45151F0714F11AC400F021AC /* SKDataDownloader.h */; };
+		45151F0A14F11AC400F021AC /* SKDataDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = 45151F0814F11AC400F021AC /* SKDataDownloader.m */; };
+		45151F1114F11CD700F021AC /* SKDataDownloaderTest.h in Headers */ = {isa = PBXBuildFile; fileRef = 45151F0F14F11CD700F021AC /* SKDataDownloaderTest.h */; };
+		45151F1314F11E5900F021AC /* SKDataDownloaderTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 45151F1014F11CD700F021AC /* SKDataDownloaderTest.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,6 +46,12 @@
 		45151EE814F1129300F021AC /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		45151EEA14F1129300F021AC /* SynchroKitTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SynchroKitTests.h; sourceTree = "<group>"; };
 		45151EEB14F1129300F021AC /* SynchroKitTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SynchroKitTests.m; sourceTree = "<group>"; };
+		45151EF514F115CC00F021AC /* SKObjectDescriptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SKObjectDescriptor.h; path = Model/SKObjectDescriptor.h; sourceTree = "<group>"; };
+		45151EF614F115CC00F021AC /* SKObjectDescriptor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SKObjectDescriptor.m; path = Model/SKObjectDescriptor.m; sourceTree = "<group>"; };
+		45151F0714F11AC400F021AC /* SKDataDownloader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SKDataDownloader.h; path = Worker/SKDataDownloader.h; sourceTree = "<group>"; };
+		45151F0814F11AC400F021AC /* SKDataDownloader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SKDataDownloader.m; path = Worker/SKDataDownloader.m; sourceTree = "<group>"; };
+		45151F0F14F11CD700F021AC /* SKDataDownloaderTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKDataDownloaderTest.h; sourceTree = "<group>"; };
+		45151F1014F11CD700F021AC /* SKDataDownloaderTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKDataDownloaderTest.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,6 +112,8 @@
 				45151ED314F1129300F021AC /* SynchroKit.h */,
 				45151ED414F1129300F021AC /* SynchroKit.m */,
 				45151ED114F1129300F021AC /* Supporting Files */,
+				45151F0614F11AA600F021AC /* Worker */,
+				45151EF914F115D500F021AC /* Model */,
 			);
 			path = SynchroKit;
 			sourceTree = "<group>";
@@ -117,6 +131,8 @@
 			children = (
 				45151EEA14F1129300F021AC /* SynchroKitTests.h */,
 				45151EEB14F1129300F021AC /* SynchroKitTests.m */,
+				45151F0F14F11CD700F021AC /* SKDataDownloaderTest.h */,
+				45151F1014F11CD700F021AC /* SKDataDownloaderTest.m */,
 				45151EE514F1129300F021AC /* Supporting Files */,
 			);
 			path = SynchroKitTests;
@@ -131,6 +147,24 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		45151EF914F115D500F021AC /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				45151EF514F115CC00F021AC /* SKObjectDescriptor.h */,
+				45151EF614F115CC00F021AC /* SKObjectDescriptor.m */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		45151F0614F11AA600F021AC /* Worker */ = {
+			isa = PBXGroup;
+			children = (
+				45151F0714F11AC400F021AC /* SKDataDownloader.h */,
+				45151F0814F11AC400F021AC /* SKDataDownloader.m */,
+			);
+			name = Worker;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -138,6 +172,9 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				45151EF714F115CC00F021AC /* SKObjectDescriptor.h in Headers */,
+				45151F0914F11AC400F021AC /* SKDataDownloader.h in Headers */,
+				45151F1114F11CD700F021AC /* SKDataDownloaderTest.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -239,6 +276,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				45151ED514F1129300F021AC /* SynchroKit.m in Sources */,
+				45151EF814F115CC00F021AC /* SKObjectDescriptor.m in Sources */,
+				45151F0A14F11AC400F021AC /* SKDataDownloader.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -247,6 +286,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				45151EEC14F1129300F021AC /* SynchroKitTests.m in Sources */,
+				45151F1314F11E5900F021AC /* SKDataDownloaderTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

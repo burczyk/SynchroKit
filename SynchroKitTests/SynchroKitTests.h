@@ -7,6 +7,7 @@
 //
 
 #import <SenTestingKit/SenTestingKit.h>
+#import "SKObjectDescriptor.h"
 
 @interface SynchroKitTests : SenTestCase
 
