@@ -1,0 +1,400 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		45151ECF14F1129300F021AC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45151ECE14F1129300F021AC /* Foundation.framework */; };
+		45151ED514F1129300F021AC /* SynchroKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 45151ED414F1129300F021AC /* SynchroKit.m */; };
+		45151EDD14F1129300F021AC /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45151EDC14F1129300F021AC /* SenTestingKit.framework */; };
+		45151EDF14F1129300F021AC /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45151EDE14F1129300F021AC /* UIKit.framework */; };
+		45151EE014F1129300F021AC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45151ECE14F1129300F021AC /* Foundation.framework */; };
+		45151EE314F1129300F021AC /* libSynchroKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 45151ECB14F1129300F021AC /* libSynchroKit.a */; };
+		45151EE914F1129300F021AC /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 45151EE714F1129300F021AC /* InfoPlist.strings */; };
+		45151EEC14F1129300F021AC /* SynchroKitTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 45151EEB14F1129300F021AC /* SynchroKitTests.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		45151EE114F1129300F021AC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 45151EC214F1129300F021AC /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 45151ECA14F1129300F021AC;
+			remoteInfo = SynchroKit;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		45151ECB14F1129300F021AC /* libSynchroKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libSynchroKit.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		45151ECE14F1129300F021AC /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		45151ED214F1129300F021AC /* SynchroKit-Prefix.pch */ = {isa = PBXFileReference; path = "SynchroKit-Prefix.pch"; sourceTree = "<group>"; };
+		45151ED314F1129300F021AC /* SynchroKit.h */ = {isa = PBXFileReference; path = SynchroKit.h; sourceTree = "<group>"; };
+		45151ED414F1129300F021AC /* SynchroKit.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SynchroKit.m; sourceTree = "<group>"; };
+		45151EDB14F1129300F021AC /* SynchroKitTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SynchroKitTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		45151EDC14F1129300F021AC /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		45151EDE14F1129300F021AC /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
+		45151EE614F1129300F021AC /* SynchroKitTests-Info.plist */ = {isa = PBXFileReference; path = "SynchroKitTests-Info.plist"; sourceTree = "<group>"; };
+		45151EE814F1129300F021AC /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		45151EEA14F1129300F021AC /* SynchroKitTests.h */ = {isa = PBXFileReference; path = SynchroKitTests.h; sourceTree = "<group>"; };
+		45151EEB14F1129300F021AC /* SynchroKitTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SynchroKitTests.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		45151EC814F1129300F021AC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				45151ECF14F1129300F021AC /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		45151ED714F1129300F021AC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				45151EDD14F1129300F021AC /* SenTestingKit.framework in Frameworks */,
+				45151EDF14F1129300F021AC /* UIKit.framework in Frameworks */,
+				45151EE014F1129300F021AC /* Foundation.framework in Frameworks */,
+				45151EE314F1129300F021AC /* libSynchroKit.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		45151EC014F1129300F021AC = {
+			isa = PBXGroup;
+			children = (
+				45151ED014F1129300F021AC /* SynchroKit */,
+				45151EE414F1129300F021AC /* SynchroKitTests */,
+				45151ECD14F1129300F021AC /* Frameworks */,
+				45151ECC14F1129300F021AC /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		45151ECC14F1129300F021AC /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				45151ECB14F1129300F021AC /* libSynchroKit.a */,
+				45151EDB14F1129300F021AC /* SynchroKitTests.octest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		45151ECD14F1129300F021AC /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				45151ECE14F1129300F021AC /* Foundation.framework */,
+				45151EDC14F1129300F021AC /* SenTestingKit.framework */,
+				45151EDE14F1129300F021AC /* UIKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		45151ED014F1129300F021AC /* SynchroKit */ = {
+			isa = PBXGroup;
+			children = (
+				45151ED314F1129300F021AC /* SynchroKit.h */,
+				45151ED414F1129300F021AC /* SynchroKit.m */,
+				45151ED114F1129300F021AC /* Supporting Files */,
+			);
+			path = SynchroKit;
+			sourceTree = "<group>";
+		};
+		45151ED114F1129300F021AC /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				45151ED214F1129300F021AC /* SynchroKit-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		45151EE414F1129300F021AC /* SynchroKitTests */ = {
+			isa = PBXGroup;
+			children = (
+				45151EEA14F1129300F021AC /* SynchroKitTests.h */,
+				45151EEB14F1129300F021AC /* SynchroKitTests.m */,
+				45151EE514F1129300F021AC /* Supporting Files */,
+			);
+			path = SynchroKitTests;
+			sourceTree = "<group>";
+		};
+		45151EE514F1129300F021AC /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				45151EE614F1129300F021AC /* SynchroKitTests-Info.plist */,
+				45151EE714F1129300F021AC /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		45151EC914F1129300F021AC /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		45151ECA14F1129300F021AC /* SynchroKit */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 45151EEF14F1129300F021AC /* Build configuration list for PBXNativeTarget "SynchroKit" */;
+			buildPhases = (
+				45151EC714F1129300F021AC /* Sources */,
+				45151EC814F1129300F021AC /* Frameworks */,
+				45151EC914F1129300F021AC /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SynchroKit;
+			productName = SynchroKit;
+			productReference = 45151ECB14F1129300F021AC /* libSynchroKit.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		45151EDA14F1129300F021AC /* SynchroKitTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 45151EF214F1129300F021AC /* Build configuration list for PBXNativeTarget "SynchroKitTests" */;
+			buildPhases = (
+				45151ED614F1129300F021AC /* Sources */,
+				45151ED714F1129300F021AC /* Frameworks */,
+				45151ED814F1129300F021AC /* Resources */,
+				45151ED914F1129300F021AC /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				45151EE214F1129300F021AC /* PBXTargetDependency */,
+			);
+			name = SynchroKitTests;
+			productName = SynchroKitTests;
+			productReference = 45151EDB14F1129300F021AC /* SynchroKitTests.octest */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		45151EC214F1129300F021AC /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
+			buildConfigurationList = 45151EC514F1129300F021AC /* Build configuration list for PBXProject "SynchroKit" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 45151EC014F1129300F021AC;
+			productRefGroup = 45151ECC14F1129300F021AC /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				45151ECA14F1129300F021AC /* SynchroKit */,
+				45151EDA14F1129300F021AC /* SynchroKitTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		45151ED814F1129300F021AC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				45151EE914F1129300F021AC /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		45151ED914F1129300F021AC /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		45151EC714F1129300F021AC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				45151ED514F1129300F021AC /* SynchroKit.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		45151ED614F1129300F021AC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				45151EEC14F1129300F021AC /* SynchroKitTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		45151EE214F1129300F021AC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 45151ECA14F1129300F021AC /* SynchroKit */;
+			targetProxy = 45151EE114F1129300F021AC /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		45151EE714F1129300F021AC /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				45151EE814F1129300F021AC /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		45151EED14F1129300F021AC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		45151EEE14F1129300F021AC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		45151EF014F1129300F021AC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DSTROOT = /tmp/SynchroKit.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "SynchroKit/SynchroKit-Prefix.pch";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		45151EF114F1129300F021AC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DSTROOT = /tmp/SynchroKit.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "SynchroKit/SynchroKit-Prefix.pch";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		45151EF314F1129300F021AC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "SynchroKit/SynchroKit-Prefix.pch";
+				INFOPLIST_FILE = "SynchroKitTests/SynchroKitTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Debug;
+		};
+		45151EF414F1129300F021AC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "SynchroKit/SynchroKit-Prefix.pch";
+				INFOPLIST_FILE = "SynchroKitTests/SynchroKitTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		45151EC514F1129300F021AC /* Build configuration list for PBXProject "SynchroKit" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				45151EED14F1129300F021AC /* Debug */,
+				45151EEE14F1129300F021AC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		45151EEF14F1129300F021AC /* Build configuration list for PBXNativeTarget "SynchroKit" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				45151EF014F1129300F021AC /* Debug */,
+				45151EF114F1129300F021AC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		45151EF214F1129300F021AC /* Build configuration list for PBXNativeTarget "SynchroKitTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				45151EF314F1129300F021AC /* Debug */,
+				45151EF414F1129300F021AC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 45151EC214F1129300F021AC /* Project object */;
+}
