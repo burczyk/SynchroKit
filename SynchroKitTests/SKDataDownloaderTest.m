@@ -10,14 +10,11 @@
 
 @implementation SKDataDownloaderTest
 
-// All code under test must be linked into the Unit Test bundle
-- (void)testMath
-{
-    STAssertTrue((1 + 1) == 2, @"Compiler isn't feeling well today :-(");
-}
-
 - (void) testInit {
-    SKDataDownloader *dataDownloader = [[SKDataDownloader alloc] initAsDaemon];   
+    SKDataDownloader *dataDownloader = [[SKDataDownloader alloc] initAsDaemon];
+    sleep(1);
+    [dataDownloader interrupt];
+    [dataDownloader release];
 }
 
 @end
