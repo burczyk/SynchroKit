@@ -8,27 +8,27 @@
 
 #import <Foundation/Foundation.h>
 #import <RestKit/RestKit.h>
-
-@class SKDataDownloader;
+#import "Model/SKObjectConfiguration.h"
+#import "Worker/SKDataDownloader.h"
 
 enum SKSynchronizationStrategy {
-    cyclic,
-    oneTime
+    SKSynchronizationStrategyCyclic,
+    SKSynchronizationStrategyOneTime
 };
 
 @interface SKObjectManager : NSObject {
-    NSMutableDictionary *registeredObjects;
+    NSMutableSet *registeredObjects;
     RKObjectManager *rkObjectManager;
     enum SKSynchronizationStrategy synchronizationStrategy;
     int synchronizationInterval;
 }
 
-@property (nonatomic, retain) NSMutableDictionary *registeredObjects;
+@property (nonatomic, retain) NSMutableSet *registeredObjects;
 @property (nonatomic, assign) enum SKSynchronizationStrategy synchronizationStrategy;
 @property (nonatomic, assign) int synchronizationInterval;
 
 - (id) initWithRKObjectManager: (RKObjectManager*) manager synchronizationStrategy: (enum SKSynchronizationStrategy) strategy synchronizationInterval: (int) seconds;
-- (void) addObject: (id) object forKey: (NSString*) key;
+- (void) addObject: (SKObjectConfiguration*) object;
 - (void) run;
 
 @end

@@ -8,19 +8,20 @@
 
 #import <Foundation/Foundation.h>
 #import <RestKit/RestKit.h>
+#import "../Model/SKObjectConfiguration.h"
 
 @interface SKDataDownloader : NSObject<RKObjectLoaderDelegate> {
     NSThread *thread;
     BOOL interrupted;
-    NSMutableDictionary *registeredObjects;
+    NSMutableSet *registeredObjects;
     int seconds;
 }
 
-@property (nonatomic, retain) NSMutableDictionary *registeredObjects;
+@property (nonatomic, retain) NSMutableSet *registeredObjects;
 @property (nonatomic, assign) int seconds;
 
 - (id) init;
-- (id) initAsDaemonWithRegisteredObjects: (NSMutableDictionary*) registeredObjects timeInterval: (int) seconds;
+- (id) initAsDaemonWithRegisteredObjects: (NSMutableSet*) registeredObjects timeInterval: (int) seconds;
 
 - (void) threadMainMethod;
 - (void) interrupt;

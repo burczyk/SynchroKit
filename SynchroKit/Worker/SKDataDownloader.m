@@ -39,9 +39,9 @@
 - (void) loadObjects {
     RKObjectManager* objectManager = [RKObjectManager sharedManager];
     
-    for (NSString *path in registeredObjects.keyEnumerator) {
-        [objectManager loadObjectsAtResourcePath:path delegate:self block:^(RKObjectLoader* loader) {
-            loader.objectMapping = [objectManager.mappingProvider objectMappingForClass:[registeredObjects valueForKey:path]];
+    for (SKObjectConfiguration *objectConfiguration in registeredObjects) {
+        [objectManager loadObjectsAtResourcePath:[objectConfiguration downloadPath] delegate:self block:^(RKObjectLoader* loader) {
+            loader.objectMapping = [objectManager.mappingProvider objectMappingForClass:[objectConfiguration objectClass]];
         }];        
     }
 }

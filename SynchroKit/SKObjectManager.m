@@ -19,7 +19,7 @@
 - (id) init {
     self = [super init];
     if (self) {
-        registeredObjects = [[NSMutableDictionary alloc] init];
+        registeredObjects = [[NSMutableSet alloc] init];
     }
     return self;
 }
@@ -27,7 +27,7 @@
 - (id) initWithRKObjectManager: (RKObjectManager*) manager synchronizationStrategy: (enum SKSynchronizationStrategy) strategy synchronizationInterval: (int) seconds{
     self = [super init];
     if (self) {
-        registeredObjects = [[NSMutableDictionary alloc] init];
+        registeredObjects = [[NSMutableSet alloc] init];
         rkObjectManager = manager;
         synchronizationStrategy = strategy;
         synchronizationInterval = seconds;
@@ -37,12 +37,12 @@
 
 #pragma mark Framework Methods
 
-- (void) addObject: (id) object forKey: (NSString*) key {
-    [registeredObjects setObject:object forKey:key];
+- (void) addObject: (SKObjectConfiguration*) object {
+    [registeredObjects addObject:object];
 }
 
 - (void) run {
-    if (synchronizationStrategy == cyclic) {
+    if (synchronizationStrategy == SKSynchronizationStrategyCyclic) {
         SKDataDownloader *dataDownloader = [[SKDataDownloader alloc] initAsDaemonWithRegisteredObjects:registeredObjects timeInterval: synchronizationInterval];        
     }
 }
