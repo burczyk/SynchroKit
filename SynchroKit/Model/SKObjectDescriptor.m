@@ -13,6 +13,7 @@
 @synthesize name,
             identifier,
             lastUsedDate,
+            lastUpdateDate,
             usedCount;
 
 @end

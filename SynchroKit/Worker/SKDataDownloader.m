@@ -23,7 +23,7 @@
     return self;
 }
 
-- (id) initAsDaemonWithRegisteredObjects: (NSMutableDictionary*) registeredObjects timeInterval: (int) seconds {
+- (id) initAsDaemonWithRegisteredObjects: (NSMutableSet*) registeredObjects timeInterval: (int) seconds {
     self = [super init];
     if (self) {
         [self setRegisteredObjects:registeredObjects];
@@ -46,6 +46,18 @@
     }
 }
 
+- (void) loadObjectsByUpdateDate {
+    RKObjectManager* objectManager = [RKObjectManager sharedManager];
+    
+    for (SKObjectConfiguration *objectConfiguration in registeredObjects) {
+        if (objectConfiguration.updateDatePath != Nil && [objectConfiguration.updateDatePath length] > 0) { //updateDate exists
+            [objectManager loadObjectsAtResourcePath:[objectConfiguration updateDatePath] delegate:self block:^(RKObjectLoader* loader) {
+                loader.objectMapping = [objectManager.mappingProvider objectMappingForClass:objectConfiguration.updateDateClass];
+            }];                    
+        }
+    }    
+}
+
 #pragma mark RKObjectLoaderDelegate methods
 
 - (void)objectLoader:(RKObjectLoader*)objectLoader didLoadObjects:(NSArray*)objects {
@@ -53,6 +65,16 @@
 	[[NSUserDefaults standardUserDefaults] synchronize];
 	NSLog(@"Loaded objects count: %d", [objects count]);
     NSLog(@"Loaded objects: %@", objects);
+    for (NSObject *downloadedObject in objects) {
+        if ([downloadedObject conformsToProtocol:@protocol(UpdateDateProtocol)]) {
+            NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+            formatter.dateFormat = [downloadedObject dateFormat];
+            NSDate *objectUpdateDate = [formatter dateFromString:[downloadedObject updateDate]];
+            NSLog(@"%@ last update date: %@", [downloadedObject objectClassName], [formatter stringFromDate:objectUpdateDate]);
+            
+            [formatter release];
+        }
+    }
 }
 
 - (void)objectLoader:(RKObjectLoader*)objectLoader didFailWithError:(NSError*)error {
@@ -65,7 +87,7 @@
     NSLog(@"Thread started");
     
     while (!interrupted) {
-        [self loadObjects];
+        [self loadObjectsByUpdateDate];
         sleep(seconds);
     }
 }

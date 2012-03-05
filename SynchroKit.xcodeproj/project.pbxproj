@@ -23,6 +23,7 @@
 		451524EE14FC0CB00068971B /* SKObjectConfiguration.h in Headers */ = {isa = PBXBuildFile; fileRef = 451524EC14FC0CB00068971B /* SKObjectConfiguration.h */; };
 		451524EF14FC0CB00068971B /* SKObjectConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 451524ED14FC0CB00068971B /* SKObjectConfiguration.m */; };
 		452583D814F9087B008371F0 /* SKSynchronizationStrategy.h in Headers */ = {isa = PBXBuildFile; fileRef = 452583D714F9087B008371F0 /* SKSynchronizationStrategy.h */; };
+		4536AFD71504B7BE00E5AD7E /* UpdateDateProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 4536AFD61504B7BE00E5AD7E /* UpdateDateProtocol.h */; };
 		45660BC814F8EBCE003858E6 /* SKObjectManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 45660BC614F8EBCE003858E6 /* SKObjectManager.h */; };
 		45660BC914F8EBCE003858E6 /* SKObjectManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 45660BC714F8EBCE003858E6 /* SKObjectManager.m */; };
 		45660BD114F8EDD1003858E6 /* SKDataLoader.h in Headers */ = {isa = PBXBuildFile; fileRef = 45660BCF14F8EDD1003858E6 /* SKDataLoader.h */; };
@@ -62,6 +63,7 @@
 		451524EC14FC0CB00068971B /* SKObjectConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SKObjectConfiguration.h; path = Model/SKObjectConfiguration.h; sourceTree = "<group>"; };
 		451524ED14FC0CB00068971B /* SKObjectConfiguration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SKObjectConfiguration.m; path = Model/SKObjectConfiguration.m; sourceTree = "<group>"; };
 		452583D714F9087B008371F0 /* SKSynchronizationStrategy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SKSynchronizationStrategy.h; path = Model/SKSynchronizationStrategy.h; sourceTree = "<group>"; };
+		4536AFD61504B7BE00E5AD7E /* UpdateDateProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UpdateDateProtocol.h; path = Protocol/UpdateDateProtocol.h; sourceTree = "<group>"; };
 		45660BC614F8EBCE003858E6 /* SKObjectManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKObjectManager.h; sourceTree = "<group>"; };
 		45660BC714F8EBCE003858E6 /* SKObjectManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKObjectManager.m; sourceTree = "<group>"; };
 		45660BCF14F8EDD1003858E6 /* SKDataLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SKDataLoader.h; path = Worker/SKDataLoader.h; sourceTree = "<group>"; };
@@ -97,6 +99,7 @@
 			isa = PBXGroup;
 			children = (
 				45151ED014F1129300F021AC /* SynchroKit */,
+				4536AFD41504B77D00E5AD7E /* Supporting Files */,
 				45151EE414F1129300F021AC /* SynchroKitTests */,
 				45151ECD14F1129300F021AC /* Frameworks */,
 				45151ECC14F1129300F021AC /* Products */,
@@ -128,19 +131,11 @@
 				45151ED314F1129300F021AC /* SynchroKit.h */,
 				45660BC614F8EBCE003858E6 /* SKObjectManager.h */,
 				45660BC714F8EBCE003858E6 /* SKObjectManager.m */,
-				45151ED114F1129300F021AC /* Supporting Files */,
 				45151F0614F11AA600F021AC /* Worker */,
 				45151EF914F115D500F021AC /* Model */,
+				4536AFD51504B79700E5AD7E /* Protocol */,
 			);
 			path = SynchroKit;
-			sourceTree = "<group>";
-		};
-		45151ED114F1129300F021AC /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				45151ED214F1129300F021AC /* SynchroKit-Prefix.pch */,
-			);
-			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		45151EE414F1129300F021AC /* SynchroKitTests */ = {
@@ -189,6 +184,23 @@
 			name = Worker;
 			sourceTree = "<group>";
 		};
+		4536AFD41504B77D00E5AD7E /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				45151ED214F1129300F021AC /* SynchroKit-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			path = SynchroKit;
+			sourceTree = "<group>";
+		};
+		4536AFD51504B79700E5AD7E /* Protocol */ = {
+			isa = PBXGroup;
+			children = (
+				4536AFD61504B7BE00E5AD7E /* UpdateDateProtocol.h */,
+			);
+			name = Protocol;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -204,6 +216,7 @@
 				45660BD514F8F062003858E6 /* SKObjectManagerTests.h in Headers */,
 				452583D814F9087B008371F0 /* SKSynchronizationStrategy.h in Headers */,
 				451524EE14FC0CB00068971B /* SKObjectConfiguration.h in Headers */,
+				4536AFD71504B7BE00E5AD7E /* UpdateDateProtocol.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

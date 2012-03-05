@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <RestKit/RestKit.h>
 #import "../Model/SKObjectConfiguration.h"
+#import "../Protocol/UpdateDateProtocol.h"
 
 @interface SKDataDownloader : NSObject<RKObjectLoaderDelegate> {
     NSThread *thread;
@@ -27,5 +28,6 @@
 - (void) interrupt;
 
 - (void) loadObjects;
+- (void) loadObjectsByUpdateDate;
 
 @end

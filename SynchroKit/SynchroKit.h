@@ -8,3 +8,4 @@
 
 #import "SKObjectManager.h"
 #import "Model/SKObjectConfiguration.h"
+#import "Protocol/UpdateDateProtocol.h"

@@ -12,12 +12,14 @@
     NSString *name;
     int identifier;
     NSDate *lastUsedDate;
+    NSDate *lastUpdateDate;
     int usedCount;
 }
 
 @property(nonatomic, retain) NSString* name;
 @property(nonatomic, assign) int identifier;
 @property(nonatomic, retain) NSDate* lastUsedDate;
+@property(nonatomic, retain) NSDate* lastUpdateDate;
 @property(nonatomic, assign) int usedCount;
 
 @end

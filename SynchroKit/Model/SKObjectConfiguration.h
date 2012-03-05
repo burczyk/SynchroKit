@@ -13,13 +13,15 @@
     Class objectClass;
     NSString *downloadPath;
     NSString *updateDatePath;
+    Class updateDateClass;
 }
 
 @property (nonatomic, retain) NSString *name;
 @property (nonatomic, assign) Class objectClass;
 @property (nonatomic, retain) NSString *downloadPath;
 @property (nonatomic, retain) NSString *updateDatePath;
+@property (nonatomic, retain) Class updateDateClass;
 
-- (id) initWithName: (NSString*) name Class: (Class) objectClass downloadPath: (NSString*) downloadPath updateDatePath: (NSString*) updateDatePath;
+- (id) initWithName: (NSString*) name Class: (Class) objectClass downloadPath: (NSString*) downloadPath updateDatePath: (NSString*) updateDatePath updateDateClass: (Class) updateDateClass;
 
 @end

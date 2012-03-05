@@ -13,15 +13,17 @@
 @synthesize name,
             objectClass,
             downloadPath,
-            updateDatePath;
+            updateDatePath,
+            updateDateClass;
 
-- (id) initWithName: (NSString*) name Class: (Class) objectClass downloadPath: (NSString*) downloadPath updateDatePath: (NSString*) updateDatePath {
+- (id) initWithName: (NSString*) name Class: (Class) objectClass downloadPath: (NSString*) downloadPath updateDatePath: (NSString*) updateDatePath updateDateClass: (Class) updateDateClass {
     self = [super init];
     if (self) {
         self.name           = name;
         self.objectClass    = objectClass;
         self.downloadPath   = downloadPath;
         self.updateDatePath = updateDatePath;        
+        self.updateDateClass= updateDateClass;
     }
     
     return self;
