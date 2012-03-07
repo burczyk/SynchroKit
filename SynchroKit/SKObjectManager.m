@@ -11,6 +11,7 @@
 @implementation SKObjectManager
 
 @synthesize registeredObjects;
+@synthesize objectDescriptors;
 @synthesize synchronizationStrategy;
 @synthesize synchronizationInterval;
 
@@ -19,7 +20,8 @@
 - (id) init {
     self = [super init];
     if (self) {
-        registeredObjects = [[NSMutableSet alloc] init];
+        registeredObjects = [[NSMutableDictionary alloc] init];
+        objectDescriptors = [[NSMutableSet alloc] init];
     }
     return self;
 }
@@ -27,7 +29,8 @@
 - (id) initWithRKObjectManager: (RKObjectManager*) manager synchronizationStrategy: (enum SKSynchronizationStrategy) strategy synchronizationInterval: (int) seconds{
     self = [super init];
     if (self) {
-        registeredObjects = [[NSMutableSet alloc] init];
+        registeredObjects = [[NSMutableDictionary alloc] init];
+        objectDescriptors = [[NSMutableSet alloc] init];        
         rkObjectManager = manager;
         synchronizationStrategy = strategy;
         synchronizationInterval = seconds;
@@ -38,12 +41,12 @@
 #pragma mark Framework Methods
 
 - (void) addObject: (SKObjectConfiguration*) object {
-    [registeredObjects addObject:object];
+    [registeredObjects setValue:object forKey:object.name];
 }
 
 - (void) run {
     if (synchronizationStrategy == SKSynchronizationStrategyCyclic) {
-        SKDataDownloader *dataDownloader = [[SKDataDownloader alloc] initAsDaemonWithRegisteredObjects:registeredObjects timeInterval: synchronizationInterval];        
+        SKDataDownloader *downloader = [[SKDataDownloader alloc] initAsDaemonWithRegisteredObjects:registeredObjects objectDescriptors:objectDescriptors timeInterval: synchronizationInterval];        
     }
 }
 

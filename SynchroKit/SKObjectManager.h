@@ -17,13 +17,15 @@ enum SKSynchronizationStrategy {
 };
 
 @interface SKObjectManager : NSObject {
-    NSMutableSet *registeredObjects;
+    NSMutableDictionary *registeredObjects;
+    NSMutableSet *objectDescriptors;
     RKObjectManager *rkObjectManager;
     enum SKSynchronizationStrategy synchronizationStrategy;
     int synchronizationInterval;
 }
 
-@property (nonatomic, retain) NSMutableSet *registeredObjects;
+@property (nonatomic, retain) NSMutableDictionary *registeredObjects;
+@property (nonatomic, retain) NSMutableSet *objectDescriptors;
 @property (nonatomic, assign) enum SKSynchronizationStrategy synchronizationStrategy;
 @property (nonatomic, assign) int synchronizationInterval;
 

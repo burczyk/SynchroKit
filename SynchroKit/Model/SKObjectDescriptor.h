@@ -22,4 +22,6 @@
 @property(nonatomic, retain) NSDate* lastUpdateDate;
 @property(nonatomic, assign) int usedCount;
 
+- (id) initWithName: (NSString*) _name identifier: (int) _identifier lastUpdateDate: (NSDate*) _lastUpdateDate;
+
 @end

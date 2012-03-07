@@ -16,14 +16,14 @@
             updateDatePath,
             updateDateClass;
 
-- (id) initWithName: (NSString*) name Class: (Class) objectClass downloadPath: (NSString*) downloadPath updateDatePath: (NSString*) updateDatePath updateDateClass: (Class) updateDateClass {
+- (id) initWithName: (NSString*) _name Class: (Class) _objectClass downloadPath: (NSString*) _downloadPath updateDatePath: (NSString*) _updateDatePath updateDateClass: (Class) _updateDateClass {
     self = [super init];
     if (self) {
-        self.name           = name;
-        self.objectClass    = objectClass;
-        self.downloadPath   = downloadPath;
-        self.updateDatePath = updateDatePath;        
-        self.updateDateClass= updateDateClass;
+        self.name           = _name;
+        self.objectClass    = _objectClass;
+        self.downloadPath   = _downloadPath;
+        self.updateDatePath = _updateDatePath;        
+        self.updateDateClass= _updateDateClass;
     }
     
     return self;

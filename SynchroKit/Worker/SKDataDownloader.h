@@ -9,25 +9,37 @@
 #import <Foundation/Foundation.h>
 #import <RestKit/RestKit.h>
 #import "../Model/SKObjectConfiguration.h"
+#import "../Model/SKObjectDescriptor.h"
 #import "../Protocol/UpdateDateProtocol.h"
 
 @interface SKDataDownloader : NSObject<RKObjectLoaderDelegate> {
     NSThread *thread;
     BOOL interrupted;
-    NSMutableSet *registeredObjects;
+    NSMutableDictionary *registeredObjects;
+    NSMutableSet *objectDescriptors;
     int seconds;
+    
+    NSMutableDictionary *updateDates;
 }
 
-@property (nonatomic, retain) NSMutableSet *registeredObjects;
+@property (nonatomic, retain) NSMutableDictionary *registeredObjects;
+@property (nonatomic, retain) NSMutableSet *objectDescriptors;
 @property (nonatomic, assign) int seconds;
 
-- (id) init;
-- (id) initAsDaemonWithRegisteredObjects: (NSMutableSet*) registeredObjects timeInterval: (int) seconds;
+@property (nonatomic, retain) NSMutableDictionary *updateDates;
 
-- (void) threadMainMethod;
+- (id) init;
+- (id) initAsDaemonWithRegisteredObjects: (NSMutableDictionary*) registeredObjects objectDescriptors: (NSMutableSet*) objectDescriptors timeInterval: (int) seconds;
+
+- (void) mainUpdateMethod;
 - (void) interrupt;
 
-- (void) loadObjects;
-- (void) loadObjectsByUpdateDate;
+- (void) loadObjectsByName: (NSString*) name;
+- (void) loadAllObjects;
+- (void) loadObjectsWhenUpdatedByName: (NSString*) name;
+- (void) loadAllObjectsWhenUpdated;
+
+- (SKObjectDescriptor*) findDescriptorByName: (NSString*) name;
+- (SKObjectDescriptor*) findDescriptorByName: (NSString*) name identifier: (int) identifier;
 
 @end
