@@ -17,10 +17,15 @@
 
 #pragma mark constructors
 
-- (id) init {
+- (id) initWithRegisteredObjects: (NSMutableDictionary*) _registeredObjects objectDescriptors: (NSMutableSet*) _objectDescriptors {
     self = [super init];
     if (self) {
         interrupted = FALSE;
+        isDaemon = FALSE;
+        
+        updateDates = [[NSMutableDictionary alloc] init];
+        [self setRegisteredObjects:_registeredObjects];
+        [self setObjectDescriptors:_objectDescriptors];
     }
     return self;
 }
@@ -28,6 +33,9 @@
 - (id) initAsDaemonWithRegisteredObjects: (NSMutableDictionary*) _registeredObjects objectDescriptors: (NSMutableSet*) _objectDescriptors timeInterval: (int) _seconds {
     self = [super init];
     if (self) {
+        interrupted = FALSE;
+        isDaemon = TRUE;
+        
         updateDates = [[NSMutableDictionary alloc] init];
         [self setRegisteredObjects:_registeredObjects];
         [self setObjectDescriptors:_objectDescriptors];
@@ -43,12 +51,18 @@
 
 - (void) loadObjectsByName: (NSString*) name {
     RKObjectManager* objectManager = [RKObjectManager sharedManager];
-    
     SKObjectConfiguration *configuration = [registeredObjects valueForKey:name];
-    [objectManager loadObjectsAtResourcePath:[configuration downloadPath] delegate:self block:^(RKObjectLoader* loader) {
+    
+    //when DataDownloader is not a daemon, download objects synchronously and return from the method
+    if(isDaemon == FALSE){
+        RKObjectLoader* loader = [objectManager objectLoaderWithResourcePath:[configuration downloadPath] delegate:self];
         loader.objectMapping = [objectManager.mappingProvider objectMappingForClass:[configuration objectClass]];
-    }];        
-
+        [loader sendSynchronously];   
+    } else { //if daemon then load asynchronously
+        [objectManager loadObjectsAtResourcePath:[configuration downloadPath] delegate:self block:^(RKObjectLoader* loader) {
+            loader.objectMapping = [objectManager.mappingProvider objectMappingForClass:[configuration objectClass]];
+        }];        
+    }
 }
 
 - (void) loadAllObjects {
@@ -65,6 +79,9 @@
         [objectManager loadObjectsAtResourcePath:[configuration updateDatePath] delegate:self block:^(RKObjectLoader* loader) {
             loader.objectMapping = [objectManager.mappingProvider objectMappingForClass:configuration.updateDateClass];
         }];                    
+    } else {
+        //no synchronization date set - force download
+        [self loadObjectsByName:name];
     }
 }
 
@@ -119,7 +136,8 @@
             }
         }
     }
-    NSLog(@"Object descriptors count: %d", [objectDescriptors count]);    
+    NSLog(@"Object descriptors count: %d", [objectDescriptors count]);
+
 }
 
 - (void)objectLoader:(RKObjectLoader*)objectLoader didFailWithError:(NSError*)error {

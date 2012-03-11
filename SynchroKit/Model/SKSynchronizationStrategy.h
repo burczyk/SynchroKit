@@ -9,6 +9,6 @@
 #import <Foundation/Foundation.h>
 
 enum SKSynchronizationStrategy {
-    cyclic,
-    oneTime
+    SynchronizationStrategyCyclic,
+    SynchronizationStrategyPerRequest
 };

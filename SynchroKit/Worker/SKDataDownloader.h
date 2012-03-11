@@ -11,13 +11,16 @@
 #import "../Model/SKObjectConfiguration.h"
 #import "../Model/SKObjectDescriptor.h"
 #import "../Protocol/UpdateDateProtocol.h"
+#import "../Model/SKConditionLock.h"
 
 @interface SKDataDownloader : NSObject<RKObjectLoaderDelegate> {
     NSThread *thread;
+    NSConditionLock *conditionLock;
     BOOL interrupted;
     NSMutableDictionary *registeredObjects;
     NSMutableSet *objectDescriptors;
     int seconds;
+    BOOL isDaemon;
     
     NSMutableDictionary *updateDates;
 }
@@ -28,7 +31,7 @@
 
 @property (nonatomic, retain) NSMutableDictionary *updateDates;
 
-- (id) init;
+- (id) initWithRegisteredObjects: (NSMutableDictionary*) _registeredObjects objectDescriptors: (NSMutableSet*) _objectDescriptors;
 - (id) initAsDaemonWithRegisteredObjects: (NSMutableDictionary*) registeredObjects objectDescriptors: (NSMutableSet*) objectDescriptors timeInterval: (int) seconds;
 
 - (void) mainUpdateMethod;

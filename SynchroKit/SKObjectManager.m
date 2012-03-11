@@ -15,22 +15,17 @@
 @synthesize synchronizationStrategy;
 @synthesize synchronizationInterval;
 
-#pragma mark constructors
+@synthesize dataDownloader;
+@synthesize dataLoader;
 
-- (id) init {
-    self = [super init];
-    if (self) {
-        registeredObjects = [[NSMutableDictionary alloc] init];
-        objectDescriptors = [[NSMutableSet alloc] init];
-    }
-    return self;
-}
+#pragma mark constructor
 
-- (id) initWithRKObjectManager: (RKObjectManager*) manager synchronizationStrategy: (enum SKSynchronizationStrategy) strategy synchronizationInterval: (int) seconds{
+- (id) initWithNSManagedObjectContext: (NSManagedObjectContext*) context RKObjectManager: (RKObjectManager*) manager synchronizationStrategy: (enum SKSynchronizationStrategy) strategy synchronizationInterval: (int) seconds{
     self = [super init];
     if (self) {
         registeredObjects = [[NSMutableDictionary alloc] init];
         objectDescriptors = [[NSMutableSet alloc] init];        
+        managedObjectContext = context;
         rkObjectManager = manager;
         synchronizationStrategy = strategy;
         synchronizationInterval = seconds;
@@ -45,15 +40,34 @@
 }
 
 - (void) run {
-    if (synchronizationStrategy == SKSynchronizationStrategyCyclic) {
-        SKDataDownloader *downloader = [[SKDataDownloader alloc] initAsDaemonWithRegisteredObjects:registeredObjects objectDescriptors:objectDescriptors timeInterval: synchronizationInterval];        
+    if (synchronizationStrategy == SynchronizationStrategyCyclic) {
+        dataDownloader = [[SKDataDownloader alloc] initAsDaemonWithRegisteredObjects:registeredObjects objectDescriptors:objectDescriptors timeInterval: synchronizationInterval];        
+    } else if (synchronizationStrategy == SynchronizationStrategyPerRequest) {
+        dataDownloader = [[SKDataDownloader alloc] initWithRegisteredObjects:registeredObjects objectDescriptors:objectDescriptors];
     }
+    
+    dataLoader = [[SKDataLoader alloc] initWithManagedObjectContext:managedObjectContext];    
+}
+
+#pragma mark Fetching Objects
+
+- (NSMutableArray*) getEntitiesForName: (NSString*) name withPredicate: (NSPredicate*) predicate andSortDescriptor: (NSSortDescriptor*) descriptor {
+    if (synchronizationStrategy == SynchronizationStrategyPerRequest) {
+        [dataDownloader loadObjectsByName:name];
+    }
+    
+    NSLog(@"Returning Entities");
+    
+    return [dataLoader getEntitiesForName:name withPredicate:predicate andSortDescriptor:descriptor];
 }
 
 #pragma mark dealloc
 
 - (void) dealloc {
     [registeredObjects release];
+    [objectDescriptors release];
+    [dataDownloader release];
+    [dataLoader release];
 }
 
 @end
