@@ -30,7 +30,10 @@
 		45660BD214F8EDD1003858E6 /* SKDataLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 45660BD014F8EDD1003858E6 /* SKDataLoader.m */; };
 		45660BD514F8F062003858E6 /* SKObjectManagerTests.h in Headers */ = {isa = PBXBuildFile; fileRef = 45660BD314F8F061003858E6 /* SKObjectManagerTests.h */; };
 		45660BD714F8F077003858E6 /* SKObjectManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 45660BD414F8F061003858E6 /* SKObjectManagerTests.m */; };
-		4583F104150CCC15001F5ED2 /* SKConditionLock.h in Headers */ = {isa = PBXBuildFile; fileRef = 4583F103150CCC15001F5ED2 /* SKConditionLock.h */; };
+		4586FE73150DE50B00BDBA5D /* SKSweeper.h in Headers */ = {isa = PBXBuildFile; fileRef = 4586FE71150DE50B00BDBA5D /* SKSweeper.h */; };
+		4586FE74150DE50B00BDBA5D /* SKSweeper.m in Sources */ = {isa = PBXBuildFile; fileRef = 4586FE72150DE50B00BDBA5D /* SKSweeper.m */; };
+		4586FE78150DF39600BDBA5D /* SKSweepConfiguration.h in Headers */ = {isa = PBXBuildFile; fileRef = 4586FE76150DF39600BDBA5D /* SKSweepConfiguration.h */; };
+		4586FE79150DF39600BDBA5D /* SKSweepConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 4586FE77150DF39600BDBA5D /* SKSweepConfiguration.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,7 +74,10 @@
 		45660BD014F8EDD1003858E6 /* SKDataLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SKDataLoader.m; path = Worker/SKDataLoader.m; sourceTree = "<group>"; };
 		45660BD314F8F061003858E6 /* SKObjectManagerTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKObjectManagerTests.h; sourceTree = "<group>"; };
 		45660BD414F8F061003858E6 /* SKObjectManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKObjectManagerTests.m; sourceTree = "<group>"; };
-		4583F103150CCC15001F5ED2 /* SKConditionLock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SKConditionLock.h; path = Model/SKConditionLock.h; sourceTree = "<group>"; };
+		4586FE71150DE50B00BDBA5D /* SKSweeper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SKSweeper.h; path = Worker/SKSweeper.h; sourceTree = "<group>"; };
+		4586FE72150DE50B00BDBA5D /* SKSweeper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SKSweeper.m; path = Worker/SKSweeper.m; sourceTree = "<group>"; };
+		4586FE76150DF39600BDBA5D /* SKSweepConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SKSweepConfiguration.h; path = Model/SKSweepConfiguration.h; sourceTree = "<group>"; };
+		4586FE77150DF39600BDBA5D /* SKSweepConfiguration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SKSweepConfiguration.m; path = Model/SKSweepConfiguration.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -171,7 +177,8 @@
 				451524EC14FC0CB00068971B /* SKObjectConfiguration.h */,
 				451524ED14FC0CB00068971B /* SKObjectConfiguration.m */,
 				452583D714F9087B008371F0 /* SKSynchronizationStrategy.h */,
-				4583F103150CCC15001F5ED2 /* SKConditionLock.h */,
+				4586FE76150DF39600BDBA5D /* SKSweepConfiguration.h */,
+				4586FE77150DF39600BDBA5D /* SKSweepConfiguration.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -183,6 +190,8 @@
 				45151F0814F11AC400F021AC /* SKDataDownloader.m */,
 				45660BCF14F8EDD1003858E6 /* SKDataLoader.h */,
 				45660BD014F8EDD1003858E6 /* SKDataLoader.m */,
+				4586FE71150DE50B00BDBA5D /* SKSweeper.h */,
+				4586FE72150DE50B00BDBA5D /* SKSweeper.m */,
 			);
 			name = Worker;
 			sourceTree = "<group>";
@@ -220,7 +229,8 @@
 				452583D814F9087B008371F0 /* SKSynchronizationStrategy.h in Headers */,
 				451524EE14FC0CB00068971B /* SKObjectConfiguration.h in Headers */,
 				4536AFD71504B7BE00E5AD7E /* UpdateDateProtocol.h in Headers */,
-				4583F104150CCC15001F5ED2 /* SKConditionLock.h in Headers */,
+				4586FE73150DE50B00BDBA5D /* SKSweeper.h in Headers */,
+				4586FE78150DF39600BDBA5D /* SKSweepConfiguration.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -270,6 +280,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0420;
+				ORGANIZATIONNAME = "Kamil Burczyk";
 			};
 			buildConfigurationList = 45151EC514F1129300F021AC /* Build configuration list for PBXProject "SynchroKit" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -326,6 +337,8 @@
 				45660BC914F8EBCE003858E6 /* SKObjectManager.m in Sources */,
 				45660BD214F8EDD1003858E6 /* SKDataLoader.m in Sources */,
 				451524EF14FC0CB00068971B /* SKObjectConfiguration.m in Sources */,
+				4586FE74150DE50B00BDBA5D /* SKSweeper.m in Sources */,
+				4586FE79150DF39600BDBA5D /* SKSweepConfiguration.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

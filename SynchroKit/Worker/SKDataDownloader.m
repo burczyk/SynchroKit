@@ -3,7 +3,7 @@
 //  SynchroKit
 //
 //  Created by Kamil Burczyk on 12-02-19.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//  Copyright (c) 2012 Kamil Burczyk. All rights reserved.
 //
 
 #import "SKDataDownloader.h"

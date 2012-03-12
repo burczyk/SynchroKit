@@ -3,7 +3,7 @@
 //  SynchroKit
 //
 //  Created by Kamil Burczyk on 12-02-27.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//  Copyright (c) 2012 Kamil Burczyk. All rights reserved.
 //
 
 #import "SKObjectConfiguration.h"
