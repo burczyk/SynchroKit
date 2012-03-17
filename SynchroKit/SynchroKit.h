@@ -8,5 +8,7 @@
 
 #import "SKObjectManager.h"
 #import "Model/SKObjectConfiguration.h"
+#import "Model/SKSweepConfiguration.h"
 #import "Protocol/UpdateDateProtocol.h"
 #import "Worker/SKSweeper.h"
+

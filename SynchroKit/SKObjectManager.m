@@ -18,6 +18,8 @@
 @synthesize dataDownloader;
 @synthesize dataLoader;
 
+@synthesize sweeper;
+
 #pragma mark constructor
 
 - (id) initWithNSManagedObjectContext: (NSManagedObjectContext*) context RKObjectManager: (RKObjectManager*) manager synchronizationStrategy: (enum SKSynchronizationStrategy) strategy synchronizationInterval: (int) seconds{
@@ -45,8 +47,19 @@
     } else if (synchronizationStrategy == SynchronizationStrategyPerRequest) {
         dataDownloader = [[SKDataDownloader alloc] initWithRegisteredObjects:registeredObjects objectDescriptors:objectDescriptors];
     }
+    [dataDownloader setContext:managedObjectContext];
     
     dataLoader = [[SKDataLoader alloc] initWithManagedObjectContext:managedObjectContext];    
+}
+
+- (void) runSweeperWithConfiguration: (SKSweepConfiguration*) configuration persistentStoreCoordinator: (NSPersistentStoreCoordinator*) coordinator {
+    sweeper = [[SKSweeper alloc] initWithNSPersistentStoreCoordinator:coordinator persistentStoreName:[[rkObjectManager objectStore] storeFilename] sweepConfiguration:configuration objectDescriptors:objectDescriptors];
+    [sweeper startSweepingDaemon];
+}
+
+- (void) stopSweeper {
+    NSAssert(sweeper != NULL, @"Sweeper cannot be NULL");
+    [sweeper stopSweepingDaemon];    
 }
 
 #pragma mark Fetching Objects
@@ -68,6 +81,7 @@
     [objectDescriptors release];
     [dataDownloader release];
     [dataLoader release];
+    [super dealloc];
 }
 
 @end

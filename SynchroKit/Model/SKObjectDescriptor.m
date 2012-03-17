@@ -16,7 +16,7 @@
             lastUpdateDate,
             usedCount;
 
-- (id) initWithName: (NSString*) _name identifier: (int) _identifier lastUpdateDate: (NSDate*) _lastUpdateDate {
+- (id) initWithName: (NSString*) _name identifier: (NSManagedObjectID*) _identifier lastUpdateDate: (NSDate*) _lastUpdateDate {
     self = [super init];
     if (self) {
         [self setName:_name];

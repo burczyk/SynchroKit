@@ -22,6 +22,7 @@
     BOOL isDaemon;
     
     NSMutableDictionary *updateDates;
+    NSManagedObjectContext *context;
 }
 
 @property (nonatomic, retain) NSMutableDictionary *registeredObjects;
@@ -29,6 +30,8 @@
 @property (nonatomic, assign) int seconds;
 
 @property (nonatomic, retain) NSMutableDictionary *updateDates;
+
+@property (nonatomic, retain) NSManagedObjectContext *context;
 
 - (id) initWithRegisteredObjects: (NSMutableDictionary*) _registeredObjects objectDescriptors: (NSMutableSet*) _objectDescriptors;
 - (id) initAsDaemonWithRegisteredObjects: (NSMutableDictionary*) registeredObjects objectDescriptors: (NSMutableSet*) objectDescriptors timeInterval: (int) seconds;
@@ -42,6 +45,6 @@
 - (void) loadAllObjectsWhenUpdated;
 
 - (SKObjectDescriptor*) findDescriptorByName: (NSString*) name;
-- (SKObjectDescriptor*) findDescriptorByName: (NSString*) name identifier: (int) identifier;
+- (SKObjectDescriptor*) findDescriptorByObjectID: (NSManagedObjectID*) objectID;
 
 @end

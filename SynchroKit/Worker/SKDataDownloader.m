@@ -15,6 +15,8 @@
 @synthesize seconds;
 @synthesize updateDates;
 
+@synthesize context;
+
 #pragma mark constructors
 
 - (id) initWithRegisteredObjects: (NSMutableDictionary*) _registeredObjects objectDescriptors: (NSMutableSet*) _objectDescriptors {
@@ -110,7 +112,7 @@
             SKObjectDescriptor *objectDescriptor = [self findDescriptorByName:[downloadedObject performSelector:@selector(objectClassName)]];
             NSLog(@"object descriptor: %@", objectDescriptor);
             NSLog(@"descriptor.date: %@", objectDescriptor.lastUpdateDate);
-            if (objectDescriptor == NULL || (objectDescriptor != NULL && [objectDescriptor.lastUpdateDate compare: objectUpdateDate] < 0 )) { //there is no such object or object last update date is smaller than last update date on server
+            if (objectDescriptor == NULL || (objectDescriptor != NULL && objectDescriptor.lastUpdateDate == NULL) || (objectDescriptor != NULL && [objectDescriptor.lastUpdateDate compare: objectUpdateDate] < 0 )) { //there is no such object or object last update date is smaller than last update date on server
                 NSLog(@"Changes for %@ on server. Downloading...", [downloadedObject performSelector:@selector(objectClassName)]);
                 [self loadObjectsByName:[downloadedObject performSelector:@selector(objectClassName)]];
             } else {
@@ -121,18 +123,19 @@
         } else { //downloaded object IS NOT an UpdateDateProtocol
             NSString *name = [[downloadedObject class] description];
             NSLog(@"downloadedObject: %@", [downloadedObject class]);
-            int idf = (int) [downloadedObject performSelector:@selector(identifier)];
-            NSLog(@"szukanie: %@ %d", name, idf);
-            SKObjectDescriptor *objectDescriptor = [self findDescriptorByName:name identifier:idf];           
+            NSManagedObjectID *idf = [(NSManagedObject*) downloadedObject objectID]; //(NSManagedObjectID*) [downloadedObject performSelector:@selector(identifier)];
+            NSLog(@"szukanie: %@ %@", name, idf);
+            SKObjectDescriptor *objectDescriptor = [self findDescriptorByObjectID:idf];
             
             if (objectDescriptor == NULL) { //if there is no object descriptor then create one
                 objectDescriptor = [[SKObjectDescriptor alloc] initWithName:name identifier:idf lastUpdateDate:[updateDates valueForKey:name]]; //it should be previously set
+                [objectDescriptor setLastUsedDate:[NSDate new]];
                 [objectDescriptors addObject:objectDescriptor];
-                NSLog(@"Dodano deskryptor: %@ %d %@", name, idf, [updateDates valueForKey:name]);
+                NSLog(@"Added descriptor: %@ %@ %@", name, idf, [updateDates valueForKey:name]);
                 [objectDescriptor release];
             } else { //update existing object descriptor
                 [objectDescriptor setLastUsedDate:[updateDates valueForKey:name]];
-                NSLog(@"Update'owano deskryptor: %@ %d %@", name, idf, [updateDates valueForKey:name]);
+                NSLog(@"Updated descriptor: %@ %@ %@", name, idf, [updateDates valueForKey:name]);
             }
         }
     }
@@ -155,9 +158,9 @@
     return NULL;    
 }
 
-- (SKObjectDescriptor*) findDescriptorByName: (NSString*) name identifier: (int) identifier {
+- (SKObjectDescriptor*) findDescriptorByObjectID: (NSManagedObjectID*) objectID {
     for (SKObjectDescriptor *objectDescriptor in [self objectDescriptors]) {
-        if ([objectDescriptor.name isEqualToString:name] && objectDescriptor.identifier == identifier) {
+        if ([objectDescriptor.identifier isEqual:objectID]) {
             return objectDescriptor;
         }
     }

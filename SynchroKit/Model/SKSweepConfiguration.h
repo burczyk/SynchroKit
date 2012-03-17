@@ -7,7 +7,20 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "../Enum/SKSweepingStrategy.h"
 
-@interface SKSweepConfiguration : NSObject
+@interface SKSweepConfiguration : NSObject {
+    int sweepTimeInterval;
+    enum SKSweepingStrategy sweepingStrategy;
+    long maxPersistentStoreSize;
+    NSDate *minLastUsedDate;
+}
+
+@property (nonatomic) int sweepTimeInterval;
+@property (nonatomic) enum SKSweepingStrategy sweepingStrategy;
+@property (nonatomic) long maxPersistentStoreSize;
+@property (nonatomic, retain) NSDate *minLastUsedDate;
+
+- (id) initWithTimeInterval: (int) seconds sweepingStrategy: (enum SKSweepingStrategy) strategy maxPersistentStoreSize: (long) size minLastUpdateDate: (NSDate*) date;
 
 @end

@@ -7,21 +7,22 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <CoreData/CoreData.h>
 
 @interface SKObjectDescriptor : NSObject{
     NSString *name;
-    int identifier;
+    NSManagedObjectID *identifier;
     NSDate *lastUsedDate;
     NSDate *lastUpdateDate;
     int usedCount;
 }
 
 @property(nonatomic, retain) NSString* name;
-@property(nonatomic, assign) int identifier;
+@property(nonatomic, retain) NSManagedObjectID *identifier;
 @property(nonatomic, retain) NSDate* lastUsedDate;
 @property(nonatomic, retain) NSDate* lastUpdateDate;
 @property(nonatomic, assign) int usedCount;
 
-- (id) initWithName: (NSString*) _name identifier: (int) _identifier lastUpdateDate: (NSDate*) _lastUpdateDate;
+- (id) initWithName: (NSString*) _name identifier: (NSManagedObjectID*) identifier lastUpdateDate: (NSDate*) _lastUpdateDate;
 
 @end
