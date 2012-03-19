@@ -32,7 +32,7 @@
 - (id) initWithNSPersistentStoreCoordinator: (NSPersistentStoreCoordinator*) coordinator persistentStoreName: (NSString*) name sweepConfiguration: (SKSweepConfiguration*) configuration objectDescriptors: (NSMutableSet*) descriptors;
 
 - (long long) getPersistentStoreSize;
-- (void) removeObject: (NSManagedObject*) object;
+- (void) removeObject: (SKObjectDescriptor*) objectDescriptor;
 - (NSManagedObject*) getEntityForId: (NSManagedObjectID*) identifier;
 
 - (void) sweepOnce;

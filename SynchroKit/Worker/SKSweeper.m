@@ -33,7 +33,6 @@
 
 - (void) sweepOnce {
     NSAssert(objectDescriptors != NULL, @"ObjectDescriptors in Sweeper cannot be NULL");
-    NSMutableArray *objectDescriptorsToRemove = [[NSMutableArray alloc] init];
     NSArray *sortedObjectDescriptors;
     switch ([sweepConfiguration sweepingStrategy]) {
         case SweepingStrategyDate: //remove all objects older than date
@@ -41,7 +40,7 @@
             for (SKObjectDescriptor *objectDescriptor in sortedObjectDescriptors) {
                 NSLog(@"lastUsedDate, minLastUsedDate: %@ %@", [objectDescriptor lastUsedDate], [sweepConfiguration minLastUsedDate]);
                 if ([[objectDescriptor lastUsedDate] compare:[sweepConfiguration minLastUsedDate]] < 0) {
-                    [objectDescriptorsToRemove addObject:objectDescriptor];
+                    [self removeObject:objectDescriptor];
                 } else { //array is sorted so we can jump out of for
                     break;
                 }
@@ -49,35 +48,28 @@
             break;
             
         case SweepingStrategySizeAndDate: //remove objects by date to maintain size
-            sortedObjectDescriptors = [SKObjectDescriptorsSearcher objectDescriptorsSortedByDate:objectDescriptors];            
+            sortedObjectDescriptors = [SKObjectDescriptorsSearcher objectDescriptorsSortedByDate:objectDescriptors];
+            int counter = 0;
+            while ([self getPersistentStoreSize] > sweepConfiguration.maxPersistentStoreSize) {
+                if (counter < [objectDescriptors count]) {
+                    [self removeObject:[sortedObjectDescriptors objectAtIndex:counter]];
+                    ++counter;
+                }
+            }
             break;
             
         case SweepingStrategySizeAndUsedCount: //remove objects by usedCount to maintain size
             sortedObjectDescriptors = [SKObjectDescriptorsSearcher objectDescriptorsSortedByUsedCount:objectDescriptors];            
+            int counter2 = 0;
+            while ([self getPersistentStoreSize] > sweepConfiguration.maxPersistentStoreSize) {
+                if (counter2 < [objectDescriptors count]) {
+                    [self removeObject:[sortedObjectDescriptors objectAtIndex:counter]];
+                    ++counter2;
+                }
+            }            
             break;
     }
-    
-    NSError *error;
-    NSLog(@"object descriptors to remove: %@", objectDescriptorsToRemove);
-    for (SKObjectDescriptor *objectDescriptor in objectDescriptorsToRemove) {
-        if (objectDescriptor == NULL) {
-            NSLog(@"OBJECT DESCRIPTOR IS NULL");
-        }
-        NSManagedObject *object = [self getEntityForId:[objectDescriptor identifier]];
-        if (object != NULL) {
-            NSLog(@"Search: %@", object);
-//            [self removeObject:object];
-            [managedObjectContext deleteObject:object];
-            [objectDescriptor setLastUpdateDate:NULL];
-        } else {
-            NSLog(@"Object to remove is NULL");
-        }
-    }
-    [managedObjectContext save:&error];
-    if (error) {
-        NSLog(@"ERROR: ");
-    }
-    
+
     SKDataLoader *loader = [[SKDataLoader alloc] initWithManagedObjectContext:managedObjectContext];
     NSLog(@"Users count after delete: %ld", [loader getEntitiesCountForName:@"User" withPredicate:NULL andSortDescriptor:NULL]);
     
@@ -112,12 +104,18 @@
     return (long long) [fileAttributes objectForKey:NSFileSize];
 }
 
-- (void) removeObject: (NSManagedObject*) object {
-    NSError *error;    
-    [[self managedObjectContext] deleteObject:object];
-    [[self managedObjectContext] save:&error];
-    if (error) {
-        NSLog(@"SKSweeper error while deleting: %@", error);
+- (void) removeObject: (SKObjectDescriptor*) objectDescriptor {
+    if (objectDescriptor != NULL) {
+        NSManagedObject *object = [self getEntityForId:[objectDescriptor identifier]];
+        if (object != NULL) {
+            NSError *error;    
+            [[self managedObjectContext] deleteObject:object];
+            [[self managedObjectContext] save:&error];
+            if (error) {
+                NSLog(@"SKSweeper error while deleting");
+            }
+            [objectDescriptor setLastUpdateDate:NULL];    
+        }
     }
 }
 
@@ -125,7 +123,7 @@
     NSError *error;
     NSManagedObject *result = [managedObjectContext existingObjectWithID:identifier error:&error];
     if (error) {
-        NSLog(@"Error while getingEntityForId: %@ %@", identifier, error);
+        NSLog(@"Error while getingEntityForId: %@", identifier);
     }
     return result;
 }
