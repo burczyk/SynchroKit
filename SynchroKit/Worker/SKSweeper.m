@@ -119,6 +119,24 @@
     }
 }
 
++ (void) removeObject: (SKObjectDescriptor*) objectDescriptor managedObjectContext: (NSManagedObjectContext*) context{
+    if (objectDescriptor != NULL) {
+        NSError *error;        
+        NSManagedObject *object = [context existingObjectWithID:[objectDescriptor identifier] error:&error];
+        if (error) {
+            NSLog(@"Error while static getingEntityForId: %@", [objectDescriptor identifier]);
+        }        
+        if (object != NULL) {  
+            [context deleteObject:object];
+            [context save:&error];
+            if (error) {
+                NSLog(@"SKSweeper error while static deleting");
+            }
+            [objectDescriptor setLastUpdateDate:NULL];    
+        }
+    }
+}
+
 - (NSManagedObject*) getEntityForId: (NSManagedObjectID*) identifier {
     NSError *error;
     NSManagedObject *result = [managedObjectContext existingObjectWithID:identifier error:&error];

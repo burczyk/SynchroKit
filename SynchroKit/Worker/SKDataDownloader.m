@@ -51,46 +51,90 @@
 
 #pragma mark main download loop
 
-- (void) loadObjectsByName: (NSString*) name {
+- (void) loadObjectsByName: (NSString*) name asynchronous: (BOOL) async delegate: (id<RKObjectLoaderDelegate>) delegate{
     RKObjectManager* objectManager = [RKObjectManager sharedManager];
     SKObjectConfiguration *configuration = [registeredObjects valueForKey:name];
     
-    //when DataDownloader is not a daemon, download objects synchronously and return from the method
-    if(isDaemon == FALSE){
+    //synchronous call
+    if(async == FALSE){
         RKObjectLoader* loader = [objectManager objectLoaderWithResourcePath:[configuration downloadPath] delegate:self];
         loader.objectMapping = [objectManager.mappingProvider objectMappingForClass:[configuration objectClass]];
         [loader sendSynchronously];   
-    } else { //if daemon then load asynchronously
-        [objectManager loadObjectsAtResourcePath:[configuration downloadPath] delegate:self block:^(RKObjectLoader* loader) {
+    } else { //asynchronous call with delegate
+        [objectManager loadObjectsAtResourcePath:[configuration downloadPath] delegate:delegate block:^(RKObjectLoader* loader) {
             loader.objectMapping = [objectManager.mappingProvider objectMappingForClass:[configuration objectClass]];
         }];        
     }
 }
 
-- (void) loadAllObjects {
+- (void) loadAllObjectsAsynchronous: (BOOL) async delegate: (id<RKObjectLoaderDelegate>) delegate {
     for (NSString *name in [registeredObjects allKeys]) {
-        [self loadObjectsByName:name];        
+        [self loadObjectsByName:name asynchronous:async delegate:delegate];        
     }
 }
 
-- (void) loadObjectsWhenUpdatedByName: (NSString*) name {
+- (void) loadObjectIfUpdatedOnServerByName: (NSString*) name asynchronous: (BOOL) async delegate: (id<RKObjectLoaderDelegate>) delegate{
     RKObjectManager* objectManager = [RKObjectManager sharedManager];
-    
     SKObjectConfiguration *configuration = [registeredObjects valueForKey:name];
+    
     if (configuration.updateDatePath != Nil && [configuration.updateDatePath length] > 0) { //updateDate exists
-        [objectManager loadObjectsAtResourcePath:[configuration updateDatePath] delegate:self block:^(RKObjectLoader* loader) {
-            loader.objectMapping = [objectManager.mappingProvider objectMappingForClass:configuration.updateDateClass];
-        }];                    
+        if(async == TRUE) {            
+            [objectManager loadObjectsAtResourcePath:[configuration updateDatePath] delegate:delegate block:^(RKObjectLoader* loader) {
+                loader.objectMapping = [objectManager.mappingProvider objectMappingForClass:configuration.updateDateClass];
+            }];        
+        } else {
+            RKObjectLoader* loader = [objectManager objectLoaderWithResourcePath:[configuration updateDatePath] delegate:self];
+            loader.objectMapping = [objectManager.mappingProvider objectMappingForClass:[configuration updateDateClass]];
+            [loader sendSynchronously];                            
+        }
     } else {
         //no synchronization date set - force download
-        [self loadObjectsByName:name];
+        [self loadObjectsByName:name asynchronous:async delegate:delegate];
     }
 }
 
-- (void) loadAllObjectsWhenUpdated {
+- (void) loadAllObjectsIfUpdatedOnServerAsynchronous: (BOOL) async delegate: (id<RKObjectLoaderDelegate>) delegate {
     for (NSString *name in [registeredObjects allKeys]) {
-        [self loadObjectsWhenUpdatedByName:name];        
+        [self loadObjectIfUpdatedOnServerByName:name asynchronous:async delegate:delegate];        
     }
+}
+
+- (void) loadObjectsUpdatedSinceLastDownloadByName: (NSString*) name asynchronous: (BOOL) async delegate: (id<RKObjectLoaderDelegate>) delegate{
+    RKObjectManager* objectManager = [RKObjectManager sharedManager];
+    SKObjectConfiguration *configuration = [registeredObjects valueForKey:name];
+    SKObjectDescriptor *descriptor = [self findDescriptorByName:name];
+    NSLog(@"Descriptor: %@", descriptor);
+    NSString *dateFormat = @"yyyy-MM-dd";
+    NSString *nullDateReplacement = @"1970-01-01";
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:dateFormat];
+    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
+    if ([descriptor lastUpdateDate] != NULL) {
+        [params setValue:[formatter stringFromDate:[descriptor lastUpdateDate]] forKey:@"date"];        
+    } else {
+        [params setValue:nullDateReplacement forKey:@"date"];        
+    }
+
+    [params setValue:dateFormat forKey:@"format"];
+    
+    //synchronous call
+    if(async == FALSE){
+        RKObjectLoader* loader = [objectManager objectLoaderWithResourcePath:RKPathAppendQueryParams([configuration updatedSinceDatePath], params) delegate:self];
+        loader.objectMapping = [objectManager.mappingProvider objectMappingForClass:[configuration objectClass]];
+        
+        [loader sendSynchronously];
+    } else {
+        [objectManager loadObjectsAtResourcePath:RKPathAppendQueryParams([configuration updatedSinceDatePath], params) delegate:delegate block:^(RKObjectLoader* loader) {
+            loader.objectMapping = [objectManager.mappingProvider objectMappingForClass:configuration.objectClass];
+        }];         
+    }
+    
+    [params release];    
+    [formatter release];
+}
+
+- (void) loadObjectsWithPredicate: (NSPredicate*) predicate byName: (NSString*) name asynchronous: (BOOL) async delegate: (id<RKObjectLoaderDelegate>) delegate{
+    
 }
 
 #pragma mark RKObjectLoaderDelegate methods
@@ -114,7 +158,7 @@
             NSLog(@"descriptor.date: %@", objectDescriptor.lastUpdateDate);
             if (objectDescriptor == NULL || (objectDescriptor != NULL && objectDescriptor.lastUpdateDate == NULL) || (objectDescriptor != NULL && [objectDescriptor.lastUpdateDate compare: objectUpdateDate] < 0 )) { //there is no such object or object last update date is smaller than last update date on server
                 NSLog(@"Changes for %@ on server. Downloading...", [downloadedObject performSelector:@selector(objectClassName)]);
-                [self loadObjectsByName:[downloadedObject performSelector:@selector(objectClassName)]];
+                [self loadObjectsByName:[downloadedObject performSelector:@selector(objectClassName)] asynchronous:TRUE delegate:self];
             } else {
                 NSLog(@"Objects %@ synchronized for date: %@", [downloadedObject performSelector:@selector(objectClassName)], objectDescriptor.lastUpdateDate);
             }
@@ -123,7 +167,7 @@
         } else { //downloaded object IS NOT an UpdateDateProtocol
             NSString *name = [[downloadedObject class] description];
             NSLog(@"downloadedObject: %@", [downloadedObject class]);
-            NSManagedObjectID *idf = [(NSManagedObject*) downloadedObject objectID]; //(NSManagedObjectID*) [downloadedObject performSelector:@selector(identifier)];
+            NSManagedObjectID *idf = [(NSManagedObject*) downloadedObject objectID]; 
             NSLog(@"szukanie: %@ %@", name, idf);
             SKObjectDescriptor *objectDescriptor = [self findDescriptorByObjectID:idf];
             
@@ -131,11 +175,16 @@
                 objectDescriptor = [[SKObjectDescriptor alloc] initWithName:name identifier:idf lastUpdateDate:[updateDates valueForKey:name]]; //it should be previously set
                 [objectDescriptor setLastUsedDate:[NSDate new]];
                 [objectDescriptors addObject:objectDescriptor];
-                NSLog(@"Added descriptor: %@ %@ %@", name, idf, [updateDates valueForKey:name]);
+                NSLog(@"Added descriptor: %@ %@ %@", name, idf, [objectDescriptor lastUpdateDate]);
                 [objectDescriptor release];
             } else { //update existing object descriptor
                 [objectDescriptor setLastUsedDate:[updateDates valueForKey:name]];
-                NSLog(@"Updated descriptor: %@ %@ %@", name, idf, [updateDates valueForKey:name]);
+                NSLog(@"Updated descriptor: %@ %@ %@", name, idf, [objectDescriptor lastUpdateDate]);
+            }
+            
+            SKObjectConfiguration *configuration = [registeredObjects objectForKey:name];
+            if ([downloadedObject performSelector:[configuration isDeletedSelector]]) {
+                [SKSweeper removeObject:objectDescriptor managedObjectContext:context];
             }
         }
     }

@@ -11,6 +11,7 @@
 #import "../Model/SKObjectConfiguration.h"
 #import "../Model/SKObjectDescriptor.h"
 #import "../Protocol/UpdateDateProtocol.h"
+#import "SKSweeper.h"
 
 @interface SKDataDownloader : NSObject<RKObjectLoaderDelegate> {
     NSThread *thread;
@@ -39,10 +40,12 @@
 - (void) mainUpdateMethod;
 - (void) interrupt;
 
-- (void) loadObjectsByName: (NSString*) name;
-- (void) loadAllObjects;
-- (void) loadObjectsWhenUpdatedByName: (NSString*) name;
-- (void) loadAllObjectsWhenUpdated;
+- (void) loadAllObjectsAsynchronous: (BOOL) async delegate: (id<RKObjectLoaderDelegate>) delegate;
+- (void) loadObjectsByName: (NSString*) name asynchronous: (BOOL) async delegate: (id<RKObjectLoaderDelegate>) delegate;
+- (void) loadAllObjectsIfUpdatedOnServerAsynchronous: (BOOL) async delegate: (id<RKObjectLoaderDelegate>) delegate;
+- (void) loadObjectIfUpdatedOnServerByName: (NSString*) name asynchronous: (BOOL) async delegate: (id<RKObjectLoaderDelegate>) delegate;
+- (void) loadObjectsUpdatedSinceLastDownloadByName: (NSString*) name asynchronous: (BOOL) async delegate: (id<RKObjectLoaderDelegate>) delegate;
+- (void) loadObjectsWithPredicate: (NSPredicate*) predicate byName: (NSString*) name asynchronous: (BOOL) async delegate: (id<RKObjectLoaderDelegate>) delegate;
 
 - (SKObjectDescriptor*) findDescriptorByName: (NSString*) name;
 - (SKObjectDescriptor*) findDescriptorByObjectID: (NSManagedObjectID*) objectID;

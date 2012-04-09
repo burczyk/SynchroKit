@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		450B02EC1527186000923B35 /* SKOperator.h in Headers */ = {isa = PBXBuildFile; fileRef = 450B02EA1527186000923B35 /* SKOperator.h */; };
+		450B02F11527193100923B35 /* SKCondition.h in Headers */ = {isa = PBXBuildFile; fileRef = 450B02EF1527193100923B35 /* SKCondition.h */; };
+		450B02F21527193100923B35 /* SKCondition.m in Sources */ = {isa = PBXBuildFile; fileRef = 450B02F01527193100923B35 /* SKCondition.m */; };
 		45151ECF14F1129300F021AC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45151ECE14F1129300F021AC /* Foundation.framework */; };
 		45151EDD14F1129300F021AC /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45151EDC14F1129300F021AC /* SenTestingKit.framework */; };
 		45151EDF14F1129300F021AC /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45151EDE14F1129300F021AC /* UIKit.framework */; };
@@ -49,6 +52,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		450B02EA1527186000923B35 /* SKOperator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SKOperator.h; path = Model/SKOperator.h; sourceTree = "<group>"; };
+		450B02EF1527193100923B35 /* SKCondition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SKCondition.h; path = Model/SKCondition.h; sourceTree = "<group>"; };
+		450B02F01527193100923B35 /* SKCondition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SKCondition.m; path = Model/SKCondition.m; sourceTree = "<group>"; };
 		45151ECB14F1129300F021AC /* libSynchroKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libSynchroKit.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		45151ECE14F1129300F021AC /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		45151ED214F1129300F021AC /* SynchroKit-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SynchroKit-Prefix.pch"; sourceTree = "<group>"; };
@@ -185,6 +191,8 @@
 				451524ED14FC0CB00068971B /* SKObjectConfiguration.m */,
 				4586FE76150DF39600BDBA5D /* SKSweepConfiguration.h */,
 				4586FE77150DF39600BDBA5D /* SKSweepConfiguration.m */,
+				450B02EF1527193100923B35 /* SKCondition.h */,
+				450B02F01527193100923B35 /* SKCondition.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -222,6 +230,7 @@
 		45D532E115148ABC00FC1921 /* Enum */ = {
 			isa = PBXGroup;
 			children = (
+				450B02EA1527186000923B35 /* SKOperator.h */,
 				452583D714F9087B008371F0 /* SKSynchronizationStrategy.h */,
 				45D532E315148B0B00FC1921 /* SKSweepingStrategy.h */,
 			);
@@ -256,6 +265,8 @@
 				4586FE73150DE50B00BDBA5D /* SKSweeper.h in Headers */,
 				4586FE78150DF39600BDBA5D /* SKSweepConfiguration.h in Headers */,
 				45D532E71514976100FC1921 /* SKObjectDescriptorsSearcher.h in Headers */,
+				450B02EC1527186000923B35 /* SKOperator.h in Headers */,
+				450B02F11527193100923B35 /* SKCondition.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -365,6 +376,7 @@
 				4586FE74150DE50B00BDBA5D /* SKSweeper.m in Sources */,
 				4586FE79150DF39600BDBA5D /* SKSweepConfiguration.m in Sources */,
 				45D532E81514976100FC1921 /* SKObjectDescriptorsSearcher.m in Sources */,
+				450B02F21527193100923B35 /* SKCondition.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

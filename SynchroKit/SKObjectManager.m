@@ -66,7 +66,7 @@
 
 - (NSMutableArray*) getEntitiesForName: (NSString*) name withPredicate: (NSPredicate*) predicate andSortDescriptor: (NSSortDescriptor*) descriptor {
     if (synchronizationStrategy == SynchronizationStrategyPerRequest) {
-        [dataDownloader loadObjectsByName:name];
+        [dataDownloader loadObjectsUpdatedSinceLastDownloadByName:name asynchronous:FALSE delegate:NULL];
     }
     
     NSLog(@"Returning Entities");
