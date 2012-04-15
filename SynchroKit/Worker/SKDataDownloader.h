@@ -12,6 +12,7 @@
 #import "../Model/SKObjectDescriptor.h"
 #import "../Protocol/UpdateDateProtocol.h"
 #import "SKSweeper.h"
+#import "../Delegate/SKObjectLoaderMultipleDelegate.h"
 
 @interface SKDataDownloader : NSObject<RKObjectLoaderDelegate> {
     NSThread *thread;
@@ -24,6 +25,9 @@
     
     NSMutableDictionary *updateDates;
     NSManagedObjectContext *context;
+    
+    NSMutableArray *multipleDelegates;
+    SKObjectLoaderMultipleDelegate *globalDelegate;
 }
 
 @property (nonatomic, retain) NSMutableDictionary *registeredObjects;
@@ -33,6 +37,8 @@
 @property (nonatomic, retain) NSMutableDictionary *updateDates;
 
 @property (nonatomic, retain) NSManagedObjectContext *context;
+
+@property (nonatomic, retain) NSMutableArray *multipleDelegates;
 
 - (id) initWithRegisteredObjects: (NSMutableDictionary*) _registeredObjects objectDescriptors: (NSMutableSet*) _objectDescriptors;
 - (id) initAsDaemonWithRegisteredObjects: (NSMutableDictionary*) registeredObjects objectDescriptors: (NSMutableSet*) objectDescriptors timeInterval: (int) seconds;

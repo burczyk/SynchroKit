@@ -22,7 +22,7 @@
 
 #pragma mark constructor
 
-- (id) initWithNSManagedObjectContext: (NSManagedObjectContext*) context RKObjectManager: (RKObjectManager*) manager synchronizationStrategy: (enum SKSynchronizationStrategy) strategy synchronizationInterval: (int) seconds{
+- (id) initWithNSManagedObjectContext: (NSManagedObjectContext*) context RKObjectManager: (RKObjectManager*) manager synchronizationStrategy: (enum SKSynchronizationStrategy) strategy synchronizationInterval: (int) seconds {
     self = [super init];
     if (self) {
         registeredObjects = [[NSMutableDictionary alloc] init];
@@ -42,9 +42,9 @@
 }
 
 - (void) run {
-    if (synchronizationStrategy == SynchronizationStrategyCyclic) {
+    if (synchronizationStrategy == SynchronizationStrategyDeamon) {
         dataDownloader = [[SKDataDownloader alloc] initAsDaemonWithRegisteredObjects:registeredObjects objectDescriptors:objectDescriptors timeInterval: synchronizationInterval];        
-    } else if (synchronizationStrategy == SynchronizationStrategyPerRequest) {
+    } else if (synchronizationStrategy == SynchronizationStrategyRequest) {
         dataDownloader = [[SKDataDownloader alloc] initWithRegisteredObjects:registeredObjects objectDescriptors:objectDescriptors];
     }
     [dataDownloader setContext:managedObjectContext];
@@ -65,8 +65,9 @@
 #pragma mark Fetching Objects
 
 - (NSMutableArray*) getEntitiesForName: (NSString*) name withPredicate: (NSPredicate*) predicate andSortDescriptor: (NSSortDescriptor*) descriptor {
-    if (synchronizationStrategy == SynchronizationStrategyPerRequest) {
-        [dataDownloader loadObjectsUpdatedSinceLastDownloadByName:name asynchronous:FALSE delegate:NULL];
+    if (synchronizationStrategy == SynchronizationStrategyRequest) {
+//        [dataDownloader loadObjectsUpdatedSinceLastDownloadByName:name asynchronous:FALSE delegate:NULL];
+        [dataDownloader loadObjectsWithPredicate:[NSPredicate predicateWithFormat:@"identifier > %d", 3] byName:name asynchronous:FALSE delegate:NULL];
     }
     
     NSLog(@"Returning Entities");

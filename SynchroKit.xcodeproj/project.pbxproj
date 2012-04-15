@@ -33,6 +33,8 @@
 		45660BD214F8EDD1003858E6 /* SKDataLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 45660BD014F8EDD1003858E6 /* SKDataLoader.m */; };
 		45660BD514F8F062003858E6 /* SKObjectManagerTests.h in Headers */ = {isa = PBXBuildFile; fileRef = 45660BD314F8F061003858E6 /* SKObjectManagerTests.h */; };
 		45660BD714F8F077003858E6 /* SKObjectManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 45660BD414F8F061003858E6 /* SKObjectManagerTests.m */; };
+		457BC469153AC4EC00B547A2 /* SKObjectLoaderMultipleDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 457BC467153AC4EC00B547A2 /* SKObjectLoaderMultipleDelegate.h */; };
+		457BC46A153AC4EC00B547A2 /* SKObjectLoaderMultipleDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 457BC468153AC4EC00B547A2 /* SKObjectLoaderMultipleDelegate.m */; };
 		4586FE73150DE50B00BDBA5D /* SKSweeper.h in Headers */ = {isa = PBXBuildFile; fileRef = 4586FE71150DE50B00BDBA5D /* SKSweeper.h */; };
 		4586FE74150DE50B00BDBA5D /* SKSweeper.m in Sources */ = {isa = PBXBuildFile; fileRef = 4586FE72150DE50B00BDBA5D /* SKSweeper.m */; };
 		4586FE78150DF39600BDBA5D /* SKSweepConfiguration.h in Headers */ = {isa = PBXBuildFile; fileRef = 4586FE76150DF39600BDBA5D /* SKSweepConfiguration.h */; };
@@ -82,6 +84,8 @@
 		45660BD014F8EDD1003858E6 /* SKDataLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SKDataLoader.m; path = Worker/SKDataLoader.m; sourceTree = "<group>"; };
 		45660BD314F8F061003858E6 /* SKObjectManagerTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKObjectManagerTests.h; sourceTree = "<group>"; };
 		45660BD414F8F061003858E6 /* SKObjectManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKObjectManagerTests.m; sourceTree = "<group>"; };
+		457BC467153AC4EC00B547A2 /* SKObjectLoaderMultipleDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SKObjectLoaderMultipleDelegate.h; path = Delegate/SKObjectLoaderMultipleDelegate.h; sourceTree = "<group>"; };
+		457BC468153AC4EC00B547A2 /* SKObjectLoaderMultipleDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SKObjectLoaderMultipleDelegate.m; path = Delegate/SKObjectLoaderMultipleDelegate.m; sourceTree = "<group>"; };
 		4586FE71150DE50B00BDBA5D /* SKSweeper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SKSweeper.h; path = Worker/SKSweeper.h; sourceTree = "<group>"; };
 		4586FE72150DE50B00BDBA5D /* SKSweeper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SKSweeper.m; path = Worker/SKSweeper.m; sourceTree = "<group>"; };
 		4586FE76150DF39600BDBA5D /* SKSweepConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SKSweepConfiguration.h; path = Model/SKSweepConfiguration.h; sourceTree = "<group>"; };
@@ -155,6 +159,7 @@
 				4536AFD51504B79700E5AD7E /* Protocol */,
 				45D532E115148ABC00FC1921 /* Enum */,
 				45D532E41514972D00FC1921 /* Util */,
+				457BC465153AC4A400B547A2 /* Delegate */,
 			);
 			path = SynchroKit;
 			sourceTree = "<group>";
@@ -227,6 +232,15 @@
 			name = Protocol;
 			sourceTree = "<group>";
 		};
+		457BC465153AC4A400B547A2 /* Delegate */ = {
+			isa = PBXGroup;
+			children = (
+				457BC467153AC4EC00B547A2 /* SKObjectLoaderMultipleDelegate.h */,
+				457BC468153AC4EC00B547A2 /* SKObjectLoaderMultipleDelegate.m */,
+			);
+			name = Delegate;
+			sourceTree = "<group>";
+		};
 		45D532E115148ABC00FC1921 /* Enum */ = {
 			isa = PBXGroup;
 			children = (
@@ -267,6 +281,7 @@
 				45D532E71514976100FC1921 /* SKObjectDescriptorsSearcher.h in Headers */,
 				450B02EC1527186000923B35 /* SKOperator.h in Headers */,
 				450B02F11527193100923B35 /* SKCondition.h in Headers */,
+				457BC469153AC4EC00B547A2 /* SKObjectLoaderMultipleDelegate.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -377,6 +392,7 @@
 				4586FE79150DF39600BDBA5D /* SKSweepConfiguration.m in Sources */,
 				45D532E81514976100FC1921 /* SKObjectDescriptorsSearcher.m in Sources */,
 				450B02F21527193100923B35 /* SKCondition.m in Sources */,
+				457BC46A153AC4EC00B547A2 /* SKObjectLoaderMultipleDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <Restkit/Restkit.h>
 
 @interface SKObjectConfiguration : NSObject {
     NSString *name;
@@ -14,9 +15,9 @@
     NSString *downloadPath;
     NSString *updateDatePath;
     NSString *updatedSinceDatePath;
-    NSString *isDeletedFieldName;
     Class updateDateClass;
-    id delegate;
+    id<RKObjectLoaderDelegate> delegate;
+    BOOL asynchronous;
     SEL isDeletedSelector;
 }
 
@@ -25,14 +26,13 @@
 @property (nonatomic, retain) NSString *downloadPath;
 @property (nonatomic, retain) NSString *updateDatePath;
 @property (nonatomic, retain) NSString *updatedSinceDatePath;
-@property (nonatomic, retain) NSString *isDeletedFieldName;
 @property (nonatomic, retain) Class updateDateClass;
-@property (nonatomic, retain) id delegate;
+@property (nonatomic, retain) id<RKObjectLoaderDelegate> delegate;
+@property (nonatomic, assign) BOOL asynchronous;
 @property (nonatomic, assign) SEL isDeletedSelector;
 
 
 - (id) initWithName: (NSString*) name Class: (Class) objectClass downloadPath: (NSString*) downloadPath;
 - (id) initWithName: (NSString*) name Class: (Class) objectClass downloadPath: (NSString*) downloadPath updateDatePath: (NSString*) updateDatePath updateDateClass: (Class) updateDateClass;
-- (id) initWithName: (NSString*) name Class: (Class) objectClass downloadPath: (NSString*) downloadPath updateDatePath: (NSString*) updateDatePath updateDateClass: (Class) updateDateClass updatedSinceDatePath: (NSString*) datePath isDeletedFieldName: (NSString*) fieldName;
-- (id) initWithName: (NSString*) name Class: (Class) objectClass downloadPath: (NSString*) downloadPath updateDatePath: (NSString*) updateDatePath updateDateClass: (Class) updateDateClass updatedSinceDatePath: (NSString*) datePath isDeletedSelector: (SEL) selector;
+- (id) initWithName: (NSString*) name Class: (Class) objectClass downloadPath: (NSString*) downloadPath updateDatePath: (NSString*) updateDatePath updateDateClass: (Class) updateDateClass updatedSinceDatePath: (NSString*) datePath delegate: (id<RKObjectLoaderDelegate>) delegate asynchronous: (BOOL) async isDeletedSelector: (SEL) selector;
 @end

@@ -17,6 +17,8 @@
 
 @synthesize context;
 
+@synthesize multipleDelegates;
+
 #pragma mark constructors
 
 - (id) initWithRegisteredObjects: (NSMutableDictionary*) _registeredObjects objectDescriptors: (NSMutableSet*) _objectDescriptors {
@@ -28,6 +30,9 @@
         updateDates = [[NSMutableDictionary alloc] init];
         [self setRegisteredObjects:_registeredObjects];
         [self setObjectDescriptors:_objectDescriptors];
+        
+        multipleDelegates = [[NSMutableArray alloc] init];
+        globalDelegate = [[SKObjectLoaderMultipleDelegate alloc] init];        
     }
     return self;
 }
@@ -43,6 +48,9 @@
         [self setObjectDescriptors:_objectDescriptors];
         [self setSeconds:_seconds];
         
+        multipleDelegates = [[NSMutableArray alloc] init];        
+        globalDelegate = [[SKObjectLoaderMultipleDelegate alloc] init];          
+        
         thread = [[NSThread alloc] initWithTarget:self selector:@selector(mainUpdateMethod) object:nil];
         [thread start];
     }
@@ -52,6 +60,8 @@
 #pragma mark main download loop
 
 - (void) loadObjectsByName: (NSString*) name asynchronous: (BOOL) async delegate: (id<RKObjectLoaderDelegate>) delegate{
+    NSLog(@"loadObjectsByName: %@", delegate);
+    
     RKObjectManager* objectManager = [RKObjectManager sharedManager];
     SKObjectConfiguration *configuration = [registeredObjects valueForKey:name];
     
@@ -134,7 +144,7 @@
 }
 
 - (void) loadObjectsWithPredicate: (NSPredicate*) predicate byName: (NSString*) name asynchronous: (BOOL) async delegate: (id<RKObjectLoaderDelegate>) delegate{
-    
+    NSLog(@"predicate: %@", predicate);
 }
 
 #pragma mark RKObjectLoaderDelegate methods
@@ -221,10 +231,47 @@
 - (void) mainUpdateMethod {
     NSLog(@"Thread started");
     
-    while (!interrupted) {
-        [self loadAllObjectsWhenUpdated];
-        sleep(seconds);
-    }
+//    while (!interrupted) {
+        for (SKObjectConfiguration *configuration in [registeredObjects allValues]) {
+            NSLog(@"updatedSinceDatePath: %@; updateDatePath: %@; updateDateClass: %@; async: %d; delegate: %@", configuration.updatedSinceDatePath, configuration.updateDatePath, configuration.updateDateClass, configuration.asynchronous, configuration.delegate);
+            if (configuration.updatedSinceDatePath != NULL && ![@"" isEqualToString:[configuration updatedSinceDatePath]]) { // only changed Objects since date
+                if (configuration.asynchronous && configuration.delegate != NULL) { // response delivered to delegate
+                    SKObjectLoaderMultipleDelegate *multipleDelegate = [[SKObjectLoaderMultipleDelegate alloc] init];
+                    [multipleDelegate addDelegate:self];
+                    [multipleDelegate addDelegate:configuration.delegate];
+                    [self loadObjectsUpdatedSinceLastDownloadByName:[configuration name] asynchronous:TRUE delegate:self];
+                    [multipleDelegate release];
+                } else { //handle response
+                    [self loadObjectsUpdatedSinceLastDownloadByName:[configuration name] asynchronous:FALSE delegate:NULL];
+                }
+            } else if (configuration.updateDatePath != NULL && ![@"" isEqualToString:[configuration updateDatePath]] && configuration.updateDateClass != NULL) {
+                if (configuration.asynchronous && configuration.delegate != NULL) { // response delivered to delegate
+                    SKObjectLoaderMultipleDelegate *multipleDelegate = [[SKObjectLoaderMultipleDelegate alloc] init];
+                    [multipleDelegate addDelegate:self];
+                    [multipleDelegate addDelegate:configuration.delegate];
+                    [self loadObjectIfUpdatedOnServerByName:[configuration name] asynchronous:TRUE delegate:self];
+                    [multipleDelegate release];
+                } else { //handle response
+                    [self loadObjectIfUpdatedOnServerByName:[configuration name] asynchronous:FALSE delegate:NULL];
+                }                
+            } else {
+                if (configuration.asynchronous && configuration.delegate != NULL) { // response delivered to delegate
+                    SKObjectLoaderMultipleDelegate *multipleDelegate = [[SKObjectLoaderMultipleDelegate alloc] init];
+                    [multipleDelegate addDelegate:self];
+                    [multipleDelegate addDelegate:configuration.delegate];
+                    [multipleDelegates addObject:multipleDelegate];
+//                    [globalDelegate addDelegate:self];
+//                    [globalDelegate addDelegate:configuration.delegate];
+                    [self loadObjectsByName:configuration.name asynchronous:TRUE delegate:multipleDelegate];
+//                    [multipleDelegate release];
+                } else { //handle response
+                    [self loadObjectsByName:configuration.name asynchronous:FALSE delegate:NULL];
+                }                
+            }
+        }
+        
+//        sleep(seconds);
+//    }
 }
 
 - (void) interrupt {
