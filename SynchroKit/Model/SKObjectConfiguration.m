@@ -15,6 +15,7 @@
             downloadPath,
             updateDatePath,
             updatedSinceDatePath,
+            conditionUpdatePath,
             updateDateClass,
             delegate,
             isDeletedSelector,
@@ -42,11 +43,12 @@
 }
  
 
-- (id) initWithName: (NSString*) _name Class: (Class) _objectClass downloadPath: (NSString*) _downloadPath updateDatePath: (NSString*) _updateDatePath updateDateClass: (Class) _updateDateClass updatedSinceDatePath: (NSString*) _datePath delegate: (id<RKObjectLoaderDelegate>) _delegate asynchronous: (BOOL) async isDeletedSelector: (SEL) selector {
+- (id) initWithName: (NSString*) _name Class: (Class) _objectClass downloadPath: (NSString*) _downloadPath updateDatePath: (NSString*) _updateDatePath updateDateClass: (Class) _updateDateClass updatedSinceDatePath: (NSString*) _datePath conditionUpdatePath:(NSString*) _conditionUpdatePath delegate: (id<RKObjectLoaderDelegate>) _delegate asynchronous: (BOOL) async isDeletedSelector: (SEL) selector {
     
     self = [self initWithName:_name Class:_objectClass downloadPath:_downloadPath updateDatePath:_updateDatePath updateDateClass:_updateDateClass];
     if (self) {
         self.updatedSinceDatePath = _datePath;
+        self.conditionUpdatePath = _conditionUpdatePath;
         self.isDeletedSelector = selector;
         self.asynchronous = async;
         [self setDelegate:_delegate];

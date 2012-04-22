@@ -143,8 +143,32 @@
     [formatter release];
 }
 
-- (void) loadObjectsWithPredicate: (NSPredicate*) predicate byName: (NSString*) name asynchronous: (BOOL) async delegate: (id<RKObjectLoaderDelegate>) delegate{
-    NSLog(@"predicate: %@", predicate);
+- (void) loadObjectsWithConditions: (NSArray*) conditionArray byName: (NSString*) name asynchronous: (BOOL) async delegate: (id<RKObjectLoaderDelegate>) delegate {
+    RKObjectManager* objectManager = [RKObjectManager sharedManager];
+    SKObjectConfiguration *configuration = [registeredObjects valueForKey:name];
+    SKObjectDescriptor *descriptor = [self findDescriptorByName:name];
+
+    NSString *path = @"";
+    for (SKCondition *condition in conditionArray) {
+        path = [path stringByAppendingFormat:@"key=%@&op=%@&value=%@&", [condition key], SKOperatorSTR[[condition condOperator]], [condition value]];
+    }
+    
+    if ([path length] > 0) {
+        path = [path substringToIndex:[path length] -1 ];
+    }
+    
+    //synchronous call
+    if(async == FALSE){
+        RKObjectLoader* loader = [objectManager objectLoaderWithResourcePath:[NSString stringWithFormat:@"%@?%@", [configuration conditionUpdatePath], path] delegate:self];
+        loader.objectMapping = [objectManager.mappingProvider objectMappingForClass:[configuration objectClass]];
+        
+        [loader sendSynchronously];
+    } else {
+        [objectManager loadObjectsAtResourcePath:[NSString stringWithFormat:@"%@?%@", [configuration conditionUpdatePath], path] delegate:delegate block:^(RKObjectLoader* loader) {
+            loader.objectMapping = [objectManager.mappingProvider objectMappingForClass:configuration.objectClass];
+        }];         
+    }
+
 }
 
 #pragma mark RKObjectLoaderDelegate methods

@@ -90,6 +90,7 @@
 		4586FE72150DE50B00BDBA5D /* SKSweeper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SKSweeper.m; path = Worker/SKSweeper.m; sourceTree = "<group>"; };
 		4586FE76150DF39600BDBA5D /* SKSweepConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SKSweepConfiguration.h; path = Model/SKSweepConfiguration.h; sourceTree = "<group>"; };
 		4586FE77150DF39600BDBA5D /* SKSweepConfiguration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SKSweepConfiguration.m; path = Model/SKSweepConfiguration.m; sourceTree = "<group>"; };
+		45C47C141544627200AD28E2 /* libRestKit.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libRestKit.a; path = "/Users/kamilburczyk/Projekty/SynchroKitTester/RestKit/build/Release-iphoneos/libRestKit.a"; sourceTree = "<absolute>"; };
 		45D532E315148B0B00FC1921 /* SKSweepingStrategy.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SKSweepingStrategy.h; path = Enum/SKSweepingStrategy.h; sourceTree = "<group>"; };
 		45D532E51514976100FC1921 /* SKObjectDescriptorsSearcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SKObjectDescriptorsSearcher.h; path = Util/SKObjectDescriptorsSearcher.h; sourceTree = "<group>"; };
 		45D532E61514976100FC1921 /* SKObjectDescriptorsSearcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SKObjectDescriptorsSearcher.m; path = Util/SKObjectDescriptorsSearcher.m; sourceTree = "<group>"; };
@@ -141,6 +142,7 @@
 		45151ECD14F1129300F021AC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				45C47C141544627200AD28E2 /* libRestKit.a */,
 				45151ECE14F1129300F021AC /* Foundation.framework */,
 				45151EDC14F1129300F021AC /* SenTestingKit.framework */,
 				45151EDE14F1129300F021AC /* UIKit.framework */,
