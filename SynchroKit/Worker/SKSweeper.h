@@ -33,7 +33,9 @@
 
 - (long long) getPersistentStoreSize;
 - (void) removeObject: (SKObjectDescriptor*) objectDescriptor;
++ (void) removeManagedObject: (NSManagedObject*) object managedObjectContext: (NSManagedObjectContext*) context;
 + (void) removeObject: (SKObjectDescriptor*) objectDescriptor managedObjectContext: (NSManagedObjectContext*) context;
++ (void) removeStoredObjectsNotIn: (NSArray*) objects forName: (NSString*) name managedObjectContext: (NSManagedObjectContext*) context objectDescriptors: (NSMutableSet*) descriptors;
 - (NSManagedObject*) getEntityForId: (NSManagedObjectID*) identifier;
 
 - (void) sweepOnce;

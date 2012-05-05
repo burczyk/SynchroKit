@@ -16,3 +16,5 @@ enum SKOperator {
     OperatorLT,
     OperatorLE
 };
+
+static const NSString *SKOperatorSTR[] = { @"GT", @"GE", @"EQ", @"NEQ", @"LT", @"LE" }; 

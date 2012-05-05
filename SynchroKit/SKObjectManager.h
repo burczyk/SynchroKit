@@ -15,6 +15,7 @@
 #import "Worker/SKDataDownloader.h"
 #import "Worker/SKDataLoader.h"
 #import "Worker/SKSweeper.h"
+#import "Worker/SKUploader.h"
 
 @interface SKObjectManager : NSObject {
     NSMutableDictionary *registeredObjects;
@@ -29,6 +30,7 @@
     SKDataLoader *dataLoader;
     
     SKSweeper *sweeper;
+    SKUploader *uploader;
 }
 
 @property (nonatomic, retain) NSMutableDictionary *registeredObjects;
@@ -40,6 +42,7 @@
 @property (nonatomic, retain) SKDataLoader *dataLoader;
 
 @property (nonatomic, retain) SKSweeper *sweeper;
+@property (nonatomic, retain) SKUploader *uploader;
 
 - (id) initWithNSManagedObjectContext: (NSManagedObjectContext*) context RKObjectManager: (RKObjectManager*) manager synchronizationStrategy: (enum SKSynchronizationStrategy) strategy synchronizationInterval: (int) seconds;
 - (void) addObject: (SKObjectConfiguration*) object;
@@ -47,6 +50,7 @@
 - (void) runSweeperWithConfiguration: (SKSweepConfiguration*) configuration persistentStoreCoordinator: (NSPersistentStoreCoordinator*) coordinator;
 - (void) stopSweeper;
 
-- (NSMutableArray*) getEntitiesForName: (NSString*) name withPredicate: (NSPredicate*) predicate andSortDescriptor: (NSSortDescriptor*) descriptor;
+- (NSMutableArray*) getEntitiesForName: (NSString*) name withPredicate:(NSPredicate *)predicate andSortDescriptor:(NSSortDescriptor *)descriptor;
+- (void) saveObject: (NSManagedObject*) object forName:(NSString *)name;
 
 @end

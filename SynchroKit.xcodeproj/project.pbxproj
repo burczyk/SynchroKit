@@ -41,6 +41,8 @@
 		4586FE79150DF39600BDBA5D /* SKSweepConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 4586FE77150DF39600BDBA5D /* SKSweepConfiguration.m */; };
 		45D532E71514976100FC1921 /* SKObjectDescriptorsSearcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 45D532E51514976100FC1921 /* SKObjectDescriptorsSearcher.h */; };
 		45D532E81514976100FC1921 /* SKObjectDescriptorsSearcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 45D532E61514976100FC1921 /* SKObjectDescriptorsSearcher.m */; };
+		45F0AD5E155284F700B58D11 /* SKUploader.h in Headers */ = {isa = PBXBuildFile; fileRef = 45F0AD5C155284F600B58D11 /* SKUploader.h */; };
+		45F0AD5F155284F700B58D11 /* SKUploader.m in Sources */ = {isa = PBXBuildFile; fileRef = 45F0AD5D155284F600B58D11 /* SKUploader.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -94,6 +96,8 @@
 		45D532E315148B0B00FC1921 /* SKSweepingStrategy.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SKSweepingStrategy.h; path = Enum/SKSweepingStrategy.h; sourceTree = "<group>"; };
 		45D532E51514976100FC1921 /* SKObjectDescriptorsSearcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SKObjectDescriptorsSearcher.h; path = Util/SKObjectDescriptorsSearcher.h; sourceTree = "<group>"; };
 		45D532E61514976100FC1921 /* SKObjectDescriptorsSearcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SKObjectDescriptorsSearcher.m; path = Util/SKObjectDescriptorsSearcher.m; sourceTree = "<group>"; };
+		45F0AD5C155284F600B58D11 /* SKUploader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SKUploader.h; path = Worker/SKUploader.h; sourceTree = "<group>"; };
+		45F0AD5D155284F600B58D11 /* SKUploader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SKUploader.m; path = Worker/SKUploader.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -213,6 +217,8 @@
 				45660BD014F8EDD1003858E6 /* SKDataLoader.m */,
 				4586FE71150DE50B00BDBA5D /* SKSweeper.h */,
 				4586FE72150DE50B00BDBA5D /* SKSweeper.m */,
+				45F0AD5C155284F600B58D11 /* SKUploader.h */,
+				45F0AD5D155284F600B58D11 /* SKUploader.m */,
 			);
 			name = Worker;
 			sourceTree = "<group>";
@@ -284,6 +290,7 @@
 				450B02EC1527186000923B35 /* SKOperator.h in Headers */,
 				450B02F11527193100923B35 /* SKCondition.h in Headers */,
 				457BC469153AC4EC00B547A2 /* SKObjectLoaderMultipleDelegate.h in Headers */,
+				45F0AD5E155284F700B58D11 /* SKUploader.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -395,6 +402,7 @@
 				45D532E81514976100FC1921 /* SKObjectDescriptorsSearcher.m in Sources */,
 				450B02F21527193100923B35 /* SKCondition.m in Sources */,
 				457BC46A153AC4EC00B547A2 /* SKObjectLoaderMultipleDelegate.m in Sources */,
+				45F0AD5F155284F700B58D11 /* SKUploader.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

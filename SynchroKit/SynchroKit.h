@@ -11,4 +11,5 @@
 #import "Model/SKSweepConfiguration.h"
 #import "Protocol/UpdateDateProtocol.h"
 #import "Worker/SKSweeper.h"
+#import "Worker/SKUploader.h"
 

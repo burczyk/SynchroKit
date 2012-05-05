@@ -7,10 +7,13 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "../Model/SKObjectDescriptor.h"
 
 @interface SKObjectDescriptorsSearcher : NSObject
 
 + (NSArray*) objectDescriptorsSortedByDate: (NSMutableSet*) objectDescriptors;
 + (NSArray*) objectDescriptorsSortedByUsedCount: (NSMutableSet*) objectDescriptors;
++ (SKObjectDescriptor*) findDescriptorByName: (NSString*) name inObjectDescriptors: (NSMutableSet*) objectDescriptors;
++ (SKObjectDescriptor*) findDescriptorByObjectID: (NSManagedObjectID*) objectID inObjectDescriptors: (NSMutableSet*) objectDescriptors;
 
 @end

@@ -112,7 +112,7 @@
 - (void) loadObjectsUpdatedSinceLastDownloadByName: (NSString*) name asynchronous: (BOOL) async delegate: (id<RKObjectLoaderDelegate>) delegate{
     RKObjectManager* objectManager = [RKObjectManager sharedManager];
     SKObjectConfiguration *configuration = [registeredObjects valueForKey:name];
-    SKObjectDescriptor *descriptor = [self findDescriptorByName:name];
+    SKObjectDescriptor *descriptor = [SKObjectDescriptorsSearcher findDescriptorByName:name inObjectDescriptors:self.objectDescriptors];
     NSLog(@"Descriptor: %@", descriptor);
     NSString *dateFormat = @"yyyy-MM-dd";
     NSString *nullDateReplacement = @"1970-01-01";
@@ -146,7 +146,7 @@
 - (void) loadObjectsWithConditions: (NSArray*) conditionArray byName: (NSString*) name asynchronous: (BOOL) async delegate: (id<RKObjectLoaderDelegate>) delegate {
     RKObjectManager* objectManager = [RKObjectManager sharedManager];
     SKObjectConfiguration *configuration = [registeredObjects valueForKey:name];
-    SKObjectDescriptor *descriptor = [self findDescriptorByName:name];
+//    SKObjectDescriptor *descriptor = [SKObjectDescriptorsSearcher findDescriptorByName:name inObjectDescriptors:self.objectDescriptors];
 
     NSString *path = @"";
     for (SKCondition *condition in conditionArray) {
@@ -157,16 +157,23 @@
         path = [path substringToIndex:[path length] -1 ];
     }
     
+    NSString *conditionUpdatePath = [configuration conditionUpdatePath];
+    if ([[conditionUpdatePath substringFromIndex:[conditionUpdatePath length] -2] isEqualToString:@"/"]) { //remove last /
+        conditionUpdatePath = [conditionUpdatePath substringToIndex:[conditionUpdatePath length] -1 ];
+    }
+    
     //synchronous call
     if(async == FALSE){
-        RKObjectLoader* loader = [objectManager objectLoaderWithResourcePath:[NSString stringWithFormat:@"%@?%@", [configuration conditionUpdatePath], path] delegate:self];
+        NSLog(@"URL: %@?%@", conditionUpdatePath, path);
+        RKObjectLoader* loader = [objectManager objectLoaderWithResourcePath:[NSString stringWithFormat:@"%@?%@", conditionUpdatePath, path] delegate:self];
         loader.objectMapping = [objectManager.mappingProvider objectMappingForClass:[configuration objectClass]];
         
         [loader sendSynchronously];
     } else {
-        [objectManager loadObjectsAtResourcePath:[NSString stringWithFormat:@"%@?%@", [configuration conditionUpdatePath], path] delegate:delegate block:^(RKObjectLoader* loader) {
+        NSLog(@"URL: %@?%@", conditionUpdatePath, path);
+        [objectManager loadObjectsAtResourcePath:[NSString stringWithFormat:@"%@?%@", conditionUpdatePath, path] delegate:delegate block:^(RKObjectLoader* loader) {
             loader.objectMapping = [objectManager.mappingProvider objectMappingForClass:configuration.objectClass];
-        }];         
+        }];    
     }
 
 }
@@ -178,6 +185,7 @@
 	[[NSUserDefaults standardUserDefaults] synchronize];
 	NSLog(@"Loaded objects count: %d", [objects count]);
     NSLog(@"Loaded objects: %@", objects);
+    NSLog(@"Loaded objects path: %@", [objectLoader resourcePath]);
     
     for (NSObject *downloadedObject in objects) { //iterate over all objects
         if ([downloadedObject conformsToProtocol:@protocol(UpdateDateProtocol)]) { //if downloaded object is an UpdateDateProtocol
@@ -187,7 +195,7 @@
             NSLog(@"%@ last update date: %@", [downloadedObject performSelector:@selector(objectClassName)], [formatter stringFromDate:objectUpdateDate]);
             [updateDates setValue:objectUpdateDate forKey:[downloadedObject performSelector:@selector(objectClassName)]]; //setting update date from UpdateDateProtocol, object downloaded one line below will use it
             
-            SKObjectDescriptor *objectDescriptor = [self findDescriptorByName:[downloadedObject performSelector:@selector(objectClassName)]];
+            SKObjectDescriptor *objectDescriptor = [SKObjectDescriptorsSearcher findDescriptorByName:[downloadedObject performSelector:@selector(objectClassName)] inObjectDescriptors:self.objectDescriptors];
             NSLog(@"object descriptor: %@", objectDescriptor);
             NSLog(@"descriptor.date: %@", objectDescriptor.lastUpdateDate);
             if (objectDescriptor == NULL || (objectDescriptor != NULL && objectDescriptor.lastUpdateDate == NULL) || (objectDescriptor != NULL && [objectDescriptor.lastUpdateDate compare: objectUpdateDate] < 0 )) { //there is no such object or object last update date is smaller than last update date on server
@@ -203,7 +211,7 @@
             NSLog(@"downloadedObject: %@", [downloadedObject class]);
             NSManagedObjectID *idf = [(NSManagedObject*) downloadedObject objectID]; 
             NSLog(@"szukanie: %@ %@", name, idf);
-            SKObjectDescriptor *objectDescriptor = [self findDescriptorByObjectID:idf];
+            SKObjectDescriptor *objectDescriptor = [SKObjectDescriptorsSearcher findDescriptorByObjectID:idf inObjectDescriptors:self.objectDescriptors];
             
             if (objectDescriptor == NULL) { //if there is no object descriptor then create one
                 objectDescriptor = [[SKObjectDescriptor alloc] initWithName:name identifier:idf lastUpdateDate:[updateDates valueForKey:name]]; //it should be previously set
@@ -216,10 +224,24 @@
                 NSLog(@"Updated descriptor: %@ %@ %@", name, idf, [objectDescriptor lastUpdateDate]);
             }
             
+            //Remove objects marked as deleted
             SKObjectConfiguration *configuration = [registeredObjects objectForKey:name];
             if ([downloadedObject performSelector:[configuration isDeletedSelector]]) {
                 [SKSweeper removeObject:objectDescriptor managedObjectContext:context];
             }
+            
+            //Remove all objects for given name if not in downloaded array && conditional download && daemon mode
+            if ([objectLoader.resourcePath rangeOfString:@"?"].location != NSNotFound) { //conditional download
+                if (isDaemon) {
+                    [SKSweeper removeStoredObjectsNotIn:objects forName:name managedObjectContext:context objectDescriptors:objectDescriptors];
+                }
+            }
+
+            //If all object requested; remove all not downloaded
+            if ([objectLoader.resourcePath isEqualToString:configuration.downloadPath]) {
+                [SKSweeper removeStoredObjectsNotIn:objects forName:name managedObjectContext:context objectDescriptors:objectDescriptors];
+            }
+            
         }
     }
     NSLog(@"Object descriptors count: %d", [objectDescriptors count]);
@@ -230,72 +252,64 @@
 	NSLog(@"Hit error: %@", error);
 }
 
-#pragma mark searcher methods
-
-- (SKObjectDescriptor*) findDescriptorByName: (NSString*) name {
-    for (SKObjectDescriptor *objectDescriptor in [self objectDescriptors]) {
-        if ([objectDescriptor.name isEqualToString:name]) {
-            return objectDescriptor;
-        }
-    }
-    return NULL;    
-}
-
-- (SKObjectDescriptor*) findDescriptorByObjectID: (NSManagedObjectID*) objectID {
-    for (SKObjectDescriptor *objectDescriptor in [self objectDescriptors]) {
-        if ([objectDescriptor.identifier isEqual:objectID]) {
-            return objectDescriptor;
-        }
-    }
-    return NULL;
-}
-
 #pragma mark Thread methods
 
 - (void) mainUpdateMethod {
     NSLog(@"Thread started");
     
 //    while (!interrupted) {
-        for (SKObjectConfiguration *configuration in [registeredObjects allValues]) {
-            NSLog(@"updatedSinceDatePath: %@; updateDatePath: %@; updateDateClass: %@; async: %d; delegate: %@", configuration.updatedSinceDatePath, configuration.updateDatePath, configuration.updateDateClass, configuration.asynchronous, configuration.delegate);
-            if (configuration.updatedSinceDatePath != NULL && ![@"" isEqualToString:[configuration updatedSinceDatePath]]) { // only changed Objects since date
-                if (configuration.asynchronous && configuration.delegate != NULL) { // response delivered to delegate
-                    SKObjectLoaderMultipleDelegate *multipleDelegate = [[SKObjectLoaderMultipleDelegate alloc] init];
-                    [multipleDelegate addDelegate:self];
-                    [multipleDelegate addDelegate:configuration.delegate];
-                    [self loadObjectsUpdatedSinceLastDownloadByName:[configuration name] asynchronous:TRUE delegate:self];
-                    [multipleDelegate release];
-                } else { //handle response
-                    [self loadObjectsUpdatedSinceLastDownloadByName:[configuration name] asynchronous:FALSE delegate:NULL];
-                }
-            } else if (configuration.updateDatePath != NULL && ![@"" isEqualToString:[configuration updateDatePath]] && configuration.updateDateClass != NULL) {
-                if (configuration.asynchronous && configuration.delegate != NULL) { // response delivered to delegate
-                    SKObjectLoaderMultipleDelegate *multipleDelegate = [[SKObjectLoaderMultipleDelegate alloc] init];
-                    [multipleDelegate addDelegate:self];
-                    [multipleDelegate addDelegate:configuration.delegate];
-                    [self loadObjectIfUpdatedOnServerByName:[configuration name] asynchronous:TRUE delegate:self];
-                    [multipleDelegate release];
-                } else { //handle response
-                    [self loadObjectIfUpdatedOnServerByName:[configuration name] asynchronous:FALSE delegate:NULL];
-                }                
-            } else {
-                if (configuration.asynchronous && configuration.delegate != NULL) { // response delivered to delegate
-                    SKObjectLoaderMultipleDelegate *multipleDelegate = [[SKObjectLoaderMultipleDelegate alloc] init];
-                    [multipleDelegate addDelegate:self];
-                    [multipleDelegate addDelegate:configuration.delegate];
-                    [multipleDelegates addObject:multipleDelegate];
-//                    [globalDelegate addDelegate:self];
-//                    [globalDelegate addDelegate:configuration.delegate];
-                    [self loadObjectsByName:configuration.name asynchronous:TRUE delegate:multipleDelegate];
-//                    [multipleDelegate release];
-                } else { //handle response
-                    [self loadObjectsByName:configuration.name asynchronous:FALSE delegate:NULL];
-                }                
-            }
-        }
-        
+
+        [self matchBestConfigurationAndDownload];
 //        sleep(seconds);
 //    }
+}
+
+- (void) matchBestConfigurationAndDownload {
+    for (SKObjectConfiguration *configuration in [registeredObjects allValues]) {
+        NSLog(@"conditionUpdatePath: %@; updatedSinceDatePath: %@; updateDatePath: %@; updateDateClass: %@; async: %d; delegate: %@", configuration.conditionUpdatePath, configuration.updatedSinceDatePath, configuration.updateDatePath, configuration.updateDateClass, configuration.asynchronous, configuration.delegate);
+        
+        if (configuration.conditionUpdatePath != NULL && ![@"" isEqualToString:[configuration conditionUpdatePath]]) { //conditional download
+            if (configuration.asynchronous && configuration.delegate != NULL) { // response delivered to delegate
+                SKObjectLoaderMultipleDelegate *multipleDelegate = [[SKObjectLoaderMultipleDelegate alloc] init];
+                [multipleDelegate addDelegate:self];
+                [multipleDelegate addDelegate:configuration.delegate];
+                [multipleDelegates addObject:multipleDelegate];
+                [self loadObjectsWithConditions:configuration.updateConditions byName:configuration.name asynchronous:configuration.asynchronous delegate:multipleDelegate];
+                [multipleDelegate release];
+            } else { //handle response
+                [self loadObjectsWithConditions:configuration.updateConditions byName:configuration.name asynchronous:FALSE delegate:NULL];                }            
+        } else if (configuration.updatedSinceDatePath != NULL && ![@"" isEqualToString:[configuration updatedSinceDatePath]]) { // only changed Objects since date
+            if (configuration.asynchronous && configuration.delegate != NULL) { // response delivered to delegate
+                SKObjectLoaderMultipleDelegate *multipleDelegate = [[SKObjectLoaderMultipleDelegate alloc] init];
+                [multipleDelegate addDelegate:self];
+                [multipleDelegate addDelegate:configuration.delegate];
+                [self loadObjectsUpdatedSinceLastDownloadByName:[configuration name] asynchronous:TRUE delegate:self];
+                [multipleDelegate release];
+            } else { //handle response
+                [self loadObjectsUpdatedSinceLastDownloadByName:[configuration name] asynchronous:FALSE delegate:NULL];
+            }
+        } else if (configuration.updateDatePath != NULL && ![@"" isEqualToString:[configuration updateDatePath]] && configuration.updateDateClass != NULL) {
+            if (configuration.asynchronous && configuration.delegate != NULL) { // response delivered to delegate
+                SKObjectLoaderMultipleDelegate *multipleDelegate = [[SKObjectLoaderMultipleDelegate alloc] init];
+                [multipleDelegate addDelegate:self];
+                [multipleDelegate addDelegate:configuration.delegate];
+                [self loadObjectIfUpdatedOnServerByName:[configuration name] asynchronous:TRUE delegate:self];
+                [multipleDelegate release];
+            } else { //handle response
+                [self loadObjectIfUpdatedOnServerByName:[configuration name] asynchronous:FALSE delegate:NULL];
+            }                
+        } else {
+            if (configuration.asynchronous && configuration.delegate != NULL) { // response delivered to delegate
+                SKObjectLoaderMultipleDelegate *multipleDelegate = [[SKObjectLoaderMultipleDelegate alloc] init];
+                [multipleDelegate addDelegate:self];
+                [multipleDelegate addDelegate:configuration.delegate];
+                [multipleDelegates addObject:multipleDelegate];
+                [self loadObjectsByName:configuration.name asynchronous:TRUE delegate:multipleDelegate];
+            } else { //handle response
+                [self loadObjectsByName:configuration.name asynchronous:FALSE delegate:NULL];
+            }                
+        }
+    }    
 }
 
 - (void) interrupt {

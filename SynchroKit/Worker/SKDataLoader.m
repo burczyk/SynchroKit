@@ -10,12 +10,13 @@
 
 @implementation SKDataLoader
 
-@synthesize managedObjectContext;
+@synthesize managedObjectContext, objectDescriptors;
 
-- (id) initWithManagedObjectContext: (NSManagedObjectContext*) _managedObjectContext {
+- (id) initWithManagedObjectContext: (NSManagedObjectContext*) _managedObjectContext objectDescriptors: (NSMutableSet*) _objectDescriptors; {
     self = [super init];
     if (self) {
         [self setManagedObjectContext:_managedObjectContext];
+        [self setObjectDescriptors:_objectDescriptors];
     }
     return self;
 }
@@ -43,6 +44,12 @@
     }
     
     [request release];
+    
+    for (NSManagedObject *object in entities) {
+        SKObjectDescriptor *descriptor = [SKObjectDescriptorsSearcher findDescriptorByObjectID:[object objectID] inObjectDescriptors:objectDescriptors];
+        [descriptor setLastUsedDate:[NSDate new]];
+        [descriptor setUsedCount:descriptor.usedCount + 1];
+    }
     
     return entities;
 }

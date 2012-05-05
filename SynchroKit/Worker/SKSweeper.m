@@ -70,7 +70,7 @@
             break;
     }
 
-    SKDataLoader *loader = [[SKDataLoader alloc] initWithManagedObjectContext:managedObjectContext];
+    SKDataLoader *loader = [[SKDataLoader alloc] initWithManagedObjectContext:managedObjectContext objectDescriptors:objectDescriptors];
     NSLog(@"Users count after delete: %ld", [loader getEntitiesCountForName:@"User" withPredicate:NULL andSortDescriptor:NULL]);
     
 }
@@ -84,7 +84,11 @@
 
 - (void) startSweepingDaemon {
     interrupted = FALSE;
-    sweepingThread = [[NSThread alloc] initWithTarget:self selector:@selector(sweepCyclic) object:nil];
+    
+    if (sweepingThread == NULL) {
+        sweepingThread = [[NSThread alloc] initWithTarget:self selector:@selector(sweepCyclic) object:nil];
+    }
+    
     [sweepingThread start];    
 }
 
@@ -137,6 +141,39 @@
     }
 }
 
++ (void) removeStoredObjectsNotIn: (NSArray*) objects forName: (NSString*) name managedObjectContext: (NSManagedObjectContext*) context objectDescriptors: (NSMutableSet*) descriptors {
+    NSMutableSet *loadedObjectURIs = [[NSMutableSet alloc] init];
+    for (NSManagedObject *object in objects) {
+        [loadedObjectURIs addObject:[[object objectID] URIRepresentation]];
+    }
+    
+    SKDataLoader *loader = [[SKDataLoader alloc] initWithManagedObjectContext:context objectDescriptors:descriptors];
+    NSArray *storedObjects = [loader getEntitiesForName:name withPredicate:NULL andSortDescriptor:NULL];
+    
+    NSLog(@"deleting local data for: %@", name);        
+    for (NSManagedObject *object in storedObjects) {
+        if (![loadedObjectURIs containsObject:[[object objectID] URIRepresentation]]) {
+            SKObjectDescriptor *descriptor = [SKObjectDescriptorsSearcher findDescriptorByObjectID:[object objectID] inObjectDescriptors:descriptors];
+            if ([descriptor isSaved]) {
+                [SKSweeper removeManagedObject:object managedObjectContext:context];
+            }
+        }
+    }
+    
+    [loadedObjectURIs release];
+}
+
++ (void) removeManagedObject: (NSManagedObject*) object managedObjectContext: (NSManagedObjectContext*) context{
+    if (object != NULL) {
+        NSError *error;    
+        [context deleteObject:object];
+        [context save:&error];
+        if (error) {
+            NSLog(@"SKSweeper error while deleting");
+        }    
+    }
+}
+
 - (NSManagedObject*) getEntityForId: (NSManagedObjectID*) identifier {
     NSError *error;
     NSManagedObject *result = [managedObjectContext existingObjectWithID:identifier error:&error];
@@ -145,5 +182,7 @@
     }
     return result;
 }
+
+
 
 @end

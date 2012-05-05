@@ -9,14 +9,18 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 #import "../Model/SKSynchronizationStrategy.h"
+#import "../Model/SKObjectDescriptor.h"
+#import "../Util/SKObjectDescriptorsSearcher.h"
 
 @interface SKDataLoader : NSObject {
     NSManagedObjectContext *managedObjectContext;
+    NSMutableSet *objectDescriptors;
 }
 
 @property (nonatomic, retain) NSManagedObjectContext *managedObjectContext;
+@property (nonatomic, retain) NSMutableSet *objectDescriptors;
 
-- (id) initWithManagedObjectContext: (NSManagedObjectContext*) managedObjectContext;
+- (id) initWithManagedObjectContext: (NSManagedObjectContext*) managedObjectContext objectDescriptors: (NSMutableSet*) objectDescriptors;
 
 - (NSMutableArray*) getEntitiesForName: (NSString*) name withPredicate: (NSPredicate*) predicate andSortDescriptor: (NSSortDescriptor*) descriptor;
 

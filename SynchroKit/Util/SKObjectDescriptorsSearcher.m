@@ -26,4 +26,22 @@
     return result;    
 }
 
++ (SKObjectDescriptor*) findDescriptorByName: (NSString*) name inObjectDescriptors: (NSMutableSet*) objectDescriptors {
+    for (SKObjectDescriptor *objectDescriptor in objectDescriptors) {
+        if ([objectDescriptor.name isEqualToString:name]) {
+            return objectDescriptor;
+        }
+    }
+    return NULL;    
+}
+
++ (SKObjectDescriptor*) findDescriptorByObjectID: (NSManagedObjectID*) objectID inObjectDescriptors: (NSMutableSet*) objectDescriptors {
+    for (SKObjectDescriptor *objectDescriptor in objectDescriptors) {
+        if ([objectDescriptor.identifier isEqual:objectID]) {
+            return objectDescriptor;
+        }
+    }
+    return NULL;
+}
+
 @end

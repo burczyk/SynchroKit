@@ -19,6 +19,7 @@
 @synthesize dataLoader;
 
 @synthesize sweeper;
+@synthesize uploader;
 
 #pragma mark constructor
 
@@ -49,7 +50,8 @@
     }
     [dataDownloader setContext:managedObjectContext];
     
-    dataLoader = [[SKDataLoader alloc] initWithManagedObjectContext:managedObjectContext];    
+    dataLoader = [[SKDataLoader alloc] initWithManagedObjectContext:managedObjectContext objectDescriptors:objectDescriptors];
+    uploader = [[SKUploader alloc] initWithRegisteredObjects:registeredObjects objectDescriptors:objectDescriptors managedObjectContext:managedObjectContext];
 }
 
 - (void) runSweeperWithConfiguration: (SKSweepConfiguration*) configuration persistentStoreCoordinator: (NSPersistentStoreCoordinator*) coordinator {
@@ -64,15 +66,18 @@
 
 #pragma mark Fetching Objects
 
-- (NSMutableArray*) getEntitiesForName: (NSString*) name withPredicate: (NSPredicate*) predicate andSortDescriptor: (NSSortDescriptor*) descriptor {
+- (NSMutableArray*) getEntitiesForName: (NSString*) name withPredicate:(NSPredicate *)predicate andSortDescriptor:(NSSortDescriptor *)descriptor {
     if (synchronizationStrategy == SynchronizationStrategyRequest) {
-//        [dataDownloader loadObjectsUpdatedSinceLastDownloadByName:name asynchronous:FALSE delegate:NULL];
-        [dataDownloader loadObjectsWithPredicate:[NSPredicate predicateWithFormat:@"identifier > %d", 3] byName:name asynchronous:FALSE delegate:NULL];
+        [dataDownloader matchBestConfigurationAndDownload];
     }
     
     NSLog(@"Returning Entities");
     
     return [dataLoader getEntitiesForName:name withPredicate:predicate andSortDescriptor:descriptor];
+}
+
+- (void) saveObject: (NSManagedObject*) object forName:(NSString *)name {
+    [uploader saveObject:object forName:name];
 }
 
 #pragma mark dealloc

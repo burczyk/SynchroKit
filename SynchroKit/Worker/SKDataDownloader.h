@@ -14,8 +14,9 @@
 #import "../Protocol/UpdateDateProtocol.h"
 #import "SKSweeper.h"
 #import "../Delegate/SKObjectLoaderMultipleDelegate.h"
+#import "../Util/SKObjectDescriptorsSearcher.h"
 
-static const NSString *SKOperatorSTR[] = { @"GT", @"GE", @"EQ", @"NEQ", @"LT", @"LE" };    
+   
 
 @interface SKDataDownloader : NSObject<RKObjectLoaderDelegate> {
     NSThread *thread;
@@ -47,6 +48,7 @@ static const NSString *SKOperatorSTR[] = { @"GT", @"GE", @"EQ", @"NEQ", @"LT", @
 - (id) initAsDaemonWithRegisteredObjects: (NSMutableDictionary*) registeredObjects objectDescriptors: (NSMutableSet*) objectDescriptors timeInterval: (int) seconds;
 
 - (void) mainUpdateMethod;
+- (void) matchBestConfigurationAndDownload;
 - (void) interrupt;
 
 - (void) loadAllObjectsAsynchronous: (BOOL) async delegate: (id<RKObjectLoaderDelegate>) delegate;
@@ -55,8 +57,5 @@ static const NSString *SKOperatorSTR[] = { @"GT", @"GE", @"EQ", @"NEQ", @"LT", @
 - (void) loadObjectIfUpdatedOnServerByName: (NSString*) name asynchronous: (BOOL) async delegate: (id<RKObjectLoaderDelegate>) delegate;
 - (void) loadObjectsUpdatedSinceLastDownloadByName: (NSString*) name asynchronous: (BOOL) async delegate: (id<RKObjectLoaderDelegate>) delegate;
 - (void) loadObjectsWithConditions: (NSArray*) conditionArray byName: (NSString*) name asynchronous: (BOOL) async delegate: (id<RKObjectLoaderDelegate>) delegate;
-
-- (SKObjectDescriptor*) findDescriptorByName: (NSString*) name;
-- (SKObjectDescriptor*) findDescriptorByObjectID: (NSManagedObjectID*) objectID;
 
 @end

@@ -16,6 +16,7 @@
     NSString *updateDatePath;
     NSString *updatedSinceDatePath;
     NSString *conditionUpdatePath;
+    NSArray *updateConditions;
     Class updateDateClass;
     id<RKObjectLoaderDelegate> delegate;
     BOOL asynchronous;
@@ -28,6 +29,7 @@
 @property (nonatomic, retain) NSString *updateDatePath;
 @property (nonatomic, retain) NSString *updatedSinceDatePath;
 @property (nonatomic, retain) NSString *conditionUpdatePath;
+@property (nonatomic, retain) NSArray *updateConditions;
 @property (nonatomic, retain) Class updateDateClass;
 @property (nonatomic, retain) id<RKObjectLoaderDelegate> delegate;
 @property (nonatomic, assign) BOOL asynchronous;
@@ -36,5 +38,5 @@
 
 - (id) initWithName: (NSString*) name Class: (Class) objectClass downloadPath: (NSString*) downloadPath;
 - (id) initWithName: (NSString*) name Class: (Class) objectClass downloadPath: (NSString*) downloadPath updateDatePath: (NSString*) updateDatePath updateDateClass: (Class) updateDateClass;
-- (id) initWithName: (NSString*) name Class: (Class) objectClass downloadPath: (NSString*) downloadPath updateDatePath: (NSString*) updateDatePath updateDateClass: (Class) updateDateClass updatedSinceDatePath: (NSString*) datePath conditionUpdatePath:(NSString*) conditionUpdatePath delegate: (id<RKObjectLoaderDelegate>) delegate asynchronous: (BOOL) async isDeletedSelector: (SEL) selector;
+- (id) initWithName: (NSString*) name Class: (Class) objectClass downloadPath: (NSString*) downloadPath updateDatePath: (NSString*) updateDatePath updateDateClass: (Class) updateDateClass updatedSinceDatePath: (NSString*) datePath conditionUpdatePath:(NSString*) conditionUpdatePath updateConditions:(NSArray*) updateConditions delegate: (id<RKObjectLoaderDelegate>) delegate asynchronous: (BOOL) async isDeletedSelector: (SEL) selector;
 @end
