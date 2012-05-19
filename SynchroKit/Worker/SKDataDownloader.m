@@ -216,17 +216,19 @@
             if (objectDescriptor == NULL) { //if there is no object descriptor then create one
                 objectDescriptor = [[SKObjectDescriptor alloc] initWithName:name identifier:idf lastUpdateDate:[updateDates valueForKey:name]]; //it should be previously set
                 [objectDescriptor setLastUsedDate:[NSDate new]];
+                [objectDescriptor setIsSaved:TRUE];
                 [objectDescriptors addObject:objectDescriptor];
                 NSLog(@"Added descriptor: %@ %@ %@", name, idf, [objectDescriptor lastUpdateDate]);
                 [objectDescriptor release];
             } else { //update existing object descriptor
                 [objectDescriptor setLastUsedDate:[updateDates valueForKey:name]];
+                [objectDescriptor setIsSaved:TRUE];                
                 NSLog(@"Updated descriptor: %@ %@ %@", name, idf, [objectDescriptor lastUpdateDate]);
             }
             
             //Remove objects marked as deleted
             SKObjectConfiguration *configuration = [registeredObjects objectForKey:name];
-            if ([downloadedObject performSelector:[configuration isDeletedSelector]]) {
+            if (configuration.isDeletedSelector != NULL && [downloadedObject performSelector:[configuration isDeletedSelector]]) {
                 [SKSweeper removeObject:objectDescriptor managedObjectContext:context];
             }
             

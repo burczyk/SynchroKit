@@ -29,7 +29,7 @@
 - (id) initAsDeamonWithRegisteredObjects: (NSMutableDictionary*) _registeredObjects objectDescriptors: (NSMutableSet*) _objectDescriptors managedObjectContext: (NSManagedObjectContext*) _context synchronizationInterval: (int) seconds;
 - (void) saveObject: (NSManagedObject*) object forName: (NSString*) name;
 - (void) uploadCyclic;
-- (void) startSweepingDaemon;
+- (void) startUploadingDaemon;
 - (void) stopUploadingDaemon;
 
 @end

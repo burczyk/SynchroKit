@@ -79,7 +79,7 @@
     }
 }
 
-- (void) startSweepingDaemon {
+- (void) startUploadingDaemon {
     interrupted = FALSE;
     
     if (uploadingThread == NULL) {

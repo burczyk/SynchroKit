@@ -150,11 +150,13 @@
     SKDataLoader *loader = [[SKDataLoader alloc] initWithManagedObjectContext:context objectDescriptors:descriptors];
     NSArray *storedObjects = [loader getEntitiesForName:name withPredicate:NULL andSortDescriptor:NULL];
     
-    NSLog(@"deleting local data for: %@", name);        
+    NSLog(@"deleting local data not in: %d objects", [objects count]);        
     for (NSManagedObject *object in storedObjects) {
         if (![loadedObjectURIs containsObject:[[object objectID] URIRepresentation]]) {
             SKObjectDescriptor *descriptor = [SKObjectDescriptorsSearcher findDescriptorByObjectID:[object objectID] inObjectDescriptors:descriptors];
-            if ([descriptor isSaved]) {
+            NSLog(@"descriptor: %@", descriptor);
+            if (descriptor == NULL || [descriptor isSaved]) {
+                NSLog(@"removing object: %@", object);
                 [SKSweeper removeManagedObject:object managedObjectContext:context];
             }
         }

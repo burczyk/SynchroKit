@@ -72,6 +72,11 @@
     }
     
     NSLog(@"Returning Entities");
+    NSManagedObjectContext *newContext = [[NSManagedObjectContext alloc] init];
+    [newContext setPersistentStoreCoordinator:managedObjectContext.persistentStoreCoordinator];
+    managedObjectContext = newContext;
+    NSLog(@"new context: %@", managedObjectContext);
+    [dataLoader setManagedObjectContext:managedObjectContext];
     
     return [dataLoader getEntitiesForName:name withPredicate:predicate andSortDescriptor:descriptor];
 }
