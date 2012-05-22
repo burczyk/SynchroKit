@@ -200,7 +200,27 @@
             NSLog(@"descriptor.date: %@", objectDescriptor.lastUpdateDate);
             if (objectDescriptor == NULL || (objectDescriptor != NULL && objectDescriptor.lastUpdateDate == NULL) || (objectDescriptor != NULL && [objectDescriptor.lastUpdateDate compare: objectUpdateDate] < 0 )) { //there is no such object or object last update date is smaller than last update date on server
                 NSLog(@"Changes for %@ on server. Downloading...", [downloadedObject performSelector:@selector(objectClassName)]);
-                [self loadObjectsByName:[downloadedObject performSelector:@selector(objectClassName)] asynchronous:TRUE delegate:self];
+                
+                
+                SKObjectConfiguration *configuration = [registeredObjects objectForKey:[downloadedObject performSelector:@selector(objectClassName)]];
+                NSLog(@"Configuration: %@", configuration);
+                
+                if (configuration.updateDatePath != NULL && ![@"" isEqualToString:[configuration updateDatePath]] && configuration.updateDateClass != NULL) {
+                    if (configuration.asynchronous && configuration.delegate != NULL) { // response delivered to delegate
+                        NSLog(@"ASYNCHRONOUS");
+                        SKObjectLoaderMultipleDelegate *multipleDelegate = [[SKObjectLoaderMultipleDelegate alloc] init];
+                        [multipleDelegate addDelegate:self];
+                        [multipleDelegate addDelegate:configuration.delegate];
+                        [multipleDelegates addObject:multipleDelegate];
+                        [self loadObjectsByName:[downloadedObject performSelector:@selector(objectClassName)] asynchronous:TRUE delegate:multipleDelegate];
+                        [multipleDelegate release];
+                    } else { //handle response
+                        NSLog(@"SYNCHRONOUS");
+                        [self loadObjectIfUpdatedOnServerByName:[configuration name] asynchronous:FALSE delegate:NULL];
+                    }                 
+                }
+                
+//                [self loadObjectsByName:[downloadedObject performSelector:@selector(objectClassName)] asynchronous:TRUE delegate:self];
             } else {
                 NSLog(@"Objects %@ synchronized for date: %@", [downloadedObject performSelector:@selector(objectClassName)], objectDescriptor.lastUpdateDate);
             }
@@ -259,11 +279,11 @@
 - (void) mainUpdateMethod {
     NSLog(@"Thread started");
     
-//    while (!interrupted) {
+    while (!interrupted) {
 
         [self matchBestConfigurationAndDownload];
-//        sleep(seconds);
-//    }
+        sleep(seconds);
+    }
 }
 
 - (void) matchBestConfigurationAndDownload {
@@ -276,7 +296,7 @@
                 [multipleDelegate addDelegate:self];
                 [multipleDelegate addDelegate:configuration.delegate];
                 [multipleDelegates addObject:multipleDelegate];
-                [self loadObjectsWithConditions:configuration.updateConditions byName:configuration.name asynchronous:configuration.asynchronous delegate:multipleDelegate];
+                [self loadObjectsWithConditions:configuration.updateConditions byName:configuration.name asynchronous:TRUE delegate:multipleDelegate];
                 [multipleDelegate release];
             } else { //handle response
                 [self loadObjectsWithConditions:configuration.updateConditions byName:configuration.name asynchronous:FALSE delegate:NULL];                }            
@@ -285,19 +305,24 @@
                 SKObjectLoaderMultipleDelegate *multipleDelegate = [[SKObjectLoaderMultipleDelegate alloc] init];
                 [multipleDelegate addDelegate:self];
                 [multipleDelegate addDelegate:configuration.delegate];
-                [self loadObjectsUpdatedSinceLastDownloadByName:[configuration name] asynchronous:TRUE delegate:self];
+                [multipleDelegates addObject:multipleDelegate];
+                [self loadObjectsUpdatedSinceLastDownloadByName:[configuration name] asynchronous:TRUE delegate:multipleDelegate];
                 [multipleDelegate release];
             } else { //handle response
                 [self loadObjectsUpdatedSinceLastDownloadByName:[configuration name] asynchronous:FALSE delegate:NULL];
             }
         } else if (configuration.updateDatePath != NULL && ![@"" isEqualToString:[configuration updateDatePath]] && configuration.updateDateClass != NULL) {
+            NSLog(@"UPDATE DATE PATH");
             if (configuration.asynchronous && configuration.delegate != NULL) { // response delivered to delegate
+                NSLog(@"ASYNCHRONOUS");
                 SKObjectLoaderMultipleDelegate *multipleDelegate = [[SKObjectLoaderMultipleDelegate alloc] init];
                 [multipleDelegate addDelegate:self];
                 [multipleDelegate addDelegate:configuration.delegate];
-                [self loadObjectIfUpdatedOnServerByName:[configuration name] asynchronous:TRUE delegate:self];
+                [multipleDelegates addObject:multipleDelegate];
+                [self loadObjectIfUpdatedOnServerByName:[configuration name] asynchronous:TRUE delegate:multipleDelegate];
                 [multipleDelegate release];
             } else { //handle response
+                NSLog(@"SYNCHRONOUS");
                 [self loadObjectIfUpdatedOnServerByName:[configuration name] asynchronous:FALSE delegate:NULL];
             }                
         } else {

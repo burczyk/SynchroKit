@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <Restkit/Restkit.h>
+#import <RestKit/RestKit.h>
 
 @interface SKObjectConfiguration : NSObject {
     NSString *name;
